@@ -6,13 +6,22 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
+import Login from './features/login/Login';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import Task from './features/task/Task';
+
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/tasks" element={<Task />} />
+        </Routes>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );
