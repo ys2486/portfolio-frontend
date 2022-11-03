@@ -3,7 +3,7 @@ import axios from 'axios';
 import { RootState } from '../../app/store';
 import { taskState } from '../types/taskState';
 
-const apiUrl = 'http://18.183.191.237:8080/portfolio-backend/tasks';
+const apiUrl = 'http://13.115.86.228:8080/portfolio-backend/tasks';
 
 export const fetchAsyncGet = createAsyncThunk('task/get', async () => {
   const res = await axios.get(apiUrl);
