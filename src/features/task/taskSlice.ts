@@ -28,6 +28,8 @@ const taskSlice = createSlice({
         id: 0,
         name: '',
         completed: false,
+        createdAt: '',
+        updatedAt: '',
       },
     ],
     // editedTask: {
