@@ -8,14 +8,14 @@ export type taskState = {
   }[];
   editedTask: {
     id: number;
-    title: string;
-    created_at: string;
-    updated_at: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
   };
   selectedTask: {
     id: number;
-    title: string;
-    created_at: string;
-    updated_at: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
   };
 };
