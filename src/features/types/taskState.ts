@@ -9,12 +9,14 @@ export type taskState = {
   editedTask: {
     id: number;
     name: string;
+    completed: boolean;
     createdAt: string;
     updatedAt: string;
   };
   selectedTask: {
     id: number;
     name: string;
+    completed: boolean;
     createdAt: string;
     updatedAt: string;
   };

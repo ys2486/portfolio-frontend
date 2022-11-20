@@ -18,26 +18,30 @@ const initialState = {
   editedTask: {
     id: 0,
     name: '',
+    completed: false,
     createdAt: '',
     updatedAt: '',
   },
   selectedTask: {
     id: 0,
     name: '',
+    completed: false,
     createdAt: '',
     updatedAt: '',
   },
 };
 
+//タスク全取得
 export const fetchAsyncGet = createAsyncThunk('task/get', async () => {
   const res = await axios.get(apiUrl);
   return res.data;
 });
 
+//タスク登録
 export const fetchAsyncInsert = createAsyncThunk(
   'task/insert',
   async (taskName: String) => {
-    const res = await axios.post(
+    await axios.post(
       apiUrl,
       { name: taskName },
       {
@@ -46,31 +50,27 @@ export const fetchAsyncInsert = createAsyncThunk(
         },
       }
     );
-    return res.data;
   }
 );
 
-// export const fetchAsyncInsert = createAsyncThunk(
-//   'task/insert',
-//   async (taskName: String) => {
-//     const res = await axios.post(apiUrl, taskName, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     });
-//     return res.data;
-//   }
-// );
+//タスク削除
+export const fetchAsyncDelete = createAsyncThunk(
+  'task/delete',
+  async (taskId: number) => {
+    await axios.delete(apiUrl, { data: { id: taskId } });
+  }
+);
 
-// export const fetchAsyncGet = createAsyncThunk('task/get', async () => {
-//   const res = await axios.get(apiUrl, {
-//     headers: {
-//       Authorization: `JWT ${token}`,
-//     },
-//   });
-//   // console.log(res.data);
-//   return res.data;
-// });
+//タスク更新
+export const fetchAsyncUpdate = createAsyncThunk(
+  'task/update',
+  async (updateTask: taskState['selectedTask']) => {
+    await axios.put(apiUrl, {
+      id: updateTask.id,
+      name: updateTask.name,
+    });
+  }
+);
 
 const taskSlice = createSlice({
   name: 'task',
@@ -83,15 +83,13 @@ const taskSlice = createSlice({
       state.selectedTask = action.payload;
     },
   },
+  //タスク全取得の後処理
   extraReducers: (builder) => {
     builder.addCase(fetchAsyncGet.fulfilled, (state, action) => {
       return {
         ...state,
         tasks: action.payload,
       };
-    });
-    builder.addCase(fetchAsyncInsert.fulfilled, (state, action) => {
-      return;
     });
   },
 });
