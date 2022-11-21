@@ -12,7 +12,7 @@ import {
 } from './taskSlice';
 import { AppDispatch } from '../../app/store';
 import Modal from 'react-modal';
-import { Chip, Divider, Grid, TextField, Typography } from '@material-ui/core';
+import { Grid, TextField, Typography } from '@material-ui/core';
 import { taskState } from '../types/taskState';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
