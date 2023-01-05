@@ -3,7 +3,12 @@ import axios from 'axios';
 import { RootState } from '../../app/store';
 import { taskState } from '../types/taskState';
 
-const apiUrl = 'http://13.115.86.228:8080/portfolio-backend/tasks';
+//本番用
+// const apiUrl = 'http://13.115.86.228:8080/portfolio-backend/api/tasks';
+//検証用
+const apiUrl = 'http://localhost:8080/api/tasks';
+//トークン
+const token = localStorage.localJWT;
 
 const initialState = {
   tasks: [
@@ -33,7 +38,11 @@ const initialState = {
 
 //タスク全取得
 export const fetchAsyncGet = createAsyncThunk('task/get', async () => {
-  const res = await axios.get(apiUrl);
+  const res = await axios.get(`${apiUrl}/get`, {
+    headers: {
+      'X-AUTH-TOKEN': `Bearer ${token}`,
+    },
+  });
   return res.data;
 });
 
@@ -42,11 +51,12 @@ export const fetchAsyncInsert = createAsyncThunk(
   'task/insert',
   async (taskName: String) => {
     await axios.post(
-      apiUrl,
+      `${apiUrl}/post`,
       { name: taskName },
       {
         headers: {
           'Content-Type': 'application/json',
+          'X-AUTH-TOKEN': `Bearer ${token}`,
         },
       }
     );
@@ -57,7 +67,12 @@ export const fetchAsyncInsert = createAsyncThunk(
 export const fetchAsyncDelete = createAsyncThunk(
   'task/delete',
   async (taskId: number) => {
-    await axios.delete(apiUrl, { data: { id: taskId } });
+    await axios.delete(`${apiUrl}/delete`, {
+      headers: {
+        'X-AUTH-TOKEN': `Bearer ${token}`,
+      },
+      data: { id: taskId },
+    });
   }
 );
 
@@ -65,10 +80,18 @@ export const fetchAsyncDelete = createAsyncThunk(
 export const fetchAsyncUpdate = createAsyncThunk(
   'task/update',
   async (updateTask: taskState['selectedTask']) => {
-    await axios.put(apiUrl, {
-      id: updateTask.id,
-      name: updateTask.name,
-    });
+    await axios.put(
+      `${apiUrl}/put`,
+      {
+        id: updateTask.id,
+        name: updateTask.name,
+      },
+      {
+        headers: {
+          'X-AUTH-TOKEN': `Bearer ${token}`,
+        },
+      }
+    );
   }
 );
 
