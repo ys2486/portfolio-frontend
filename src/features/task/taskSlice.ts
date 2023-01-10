@@ -10,7 +10,7 @@ const apiUrl = 'http://localhost:8080/api/tasks';
 //トークン
 const token = localStorage.localJWT;
 
-const initialState = {
+const initialState: taskState = {
   tasks: [
     {
       id: 0,
@@ -95,6 +95,25 @@ export const fetchAsyncUpdate = createAsyncThunk(
   }
 );
 
+//タスク完了・未完了更新
+export const fetchAsyncUpdateCompleted = createAsyncThunk(
+  'task/updateCompleted',
+  async (updateTask: taskState['selectedTask']) => {
+    await axios.put(
+      `${apiUrl}/put/complete`,
+      {
+        id: updateTask.id,
+        completed: updateTask.completed,
+      },
+      {
+        headers: {
+          'X-AUTH-TOKEN': `Bearer ${token}`,
+        },
+      }
+    );
+  }
+);
+
 const taskSlice = createSlice({
   name: 'task',
   initialState: initialState,
@@ -112,6 +131,16 @@ const taskSlice = createSlice({
       return {
         ...state,
         tasks: action.payload,
+      };
+    });
+    builder.addCase(fetchAsyncUpdate.fulfilled, (state, action) => {
+      //更新後に初期化
+      state.selectedTask = {
+        id: 0,
+        name: '',
+        completed: false,
+        createdAt: '',
+        updatedAt: '',
       };
     });
   },

@@ -7,6 +7,7 @@ import {
   fetchAsyncDelete,
   fetchAsyncGet,
   fetchAsyncUpdate,
+  fetchAsyncUpdateCompleted,
   selectSelectedTask,
   selectTask,
 } from './taskSlice';
@@ -81,11 +82,23 @@ const TaskItem = (props: Props) => {
     await setEditModalIsOpen(false);
   };
 
+  //未完了タスクの「完了」ボタンクリック時の処理
+  const completeClicked = async () => {
+    await dispatch(fetchAsyncUpdateCompleted({ ...task, completed: true }));
+    await dispatch(fetchAsyncGet());
+  };
+
+  //完了タスクの「戻す」ボタンクリック時の処理
+  const inCompleteClicked = async () => {
+    await dispatch(fetchAsyncUpdateCompleted({ ...task, completed: false }));
+    await dispatch(fetchAsyncGet());
+  };
+
   return (
     <>
       <li className={styles.listItem}>
         <span className={styles.cursor}>{task.name}</span>
-        <div>
+        <div className={styles.buttonArea}>
           <button className={styles.taskIcon} onClick={deleteClicked}>
             <BsTrash />
           </button>
@@ -97,6 +110,27 @@ const TaskItem = (props: Props) => {
               }}
             />
           </button>
+          {/* 完了・戻すボタン */}
+          {/* <Button variant="outlined" color="warning" startIcon={<BsTrash />}> */}
+          {task.completed === false ? (
+            <Button
+              variant="contained"
+              color="inherit"
+              size="small"
+              onClick={completeClicked}
+            >
+              完了
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="inherit"
+              size="small"
+              onClick={inCompleteClicked}
+            >
+              戻す
+            </Button>
+          )}
         </div>
       </li>
       {/* 以下編集用モーダル */}

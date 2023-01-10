@@ -1,9 +1,10 @@
 .taskInput {
   width: 88%;
   min-width: 250px;
+  height: 30px;
   padding: 5px 10px 5px 5px;
   font-family: 'Comic Neue', cursive;
-  font-size: 20px;
+  font-size: 15px;
   color: black;
   /* background-color: #333333; */
   background-color: whitesmoke;

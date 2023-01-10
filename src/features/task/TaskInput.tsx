@@ -35,6 +35,7 @@ const TaskInput = () => {
           className={styles.taskInput}
           value={editedTask.name}
           onChange={handleInputChange}
+          placeholder="タスクを入力してください"
         />
       </Grid>
       <Grid xs={3}>
