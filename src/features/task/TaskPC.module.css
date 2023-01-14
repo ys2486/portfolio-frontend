@@ -5,16 +5,9 @@
   padding: 0;
 }
 
-/* App.js */
 .containerTasks {
   background-color: #555555;
   padding: 30px;
-  /* height: 100vh; */
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-  /* max-width: 100%; */
-  overflow: auto;
 }
 .taskInputContainer {
   width: 60%;
@@ -24,55 +17,27 @@
 .appTaskContainer {
   display: flex;
   justify-content: center;
-  /* align-items: center; */
 }
 .incompletedTasks {
   background-color: #292f38;
-  /* width: 50%; */
   width: 500px;
   min-width: 450px;
   min-height: 300px;
-  /* height: 500px; */
   padding: 30px;
-  /* margin: 0 5%; */
   margin-right: 20px;
   border-radius: 5px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 .completedTasks {
   background-color: #292f38;
-  /* width: 50%; */
   width: 500px;
   min-width: 450px;
   min-height: 300px;
-  /* height: 500px; */
   padding: 30px;
-  /* margin: 0 5%; */
-  /* margin-right: 20px; */
   border-radius: 5px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 }
-/* .appDetails {
-  background-color: #292f38;
-  width: 15%;
-  min-width: 350px;
-  height: 300px;
-  padding: 20px;
-  margin-left: 20px;
-  border-radius: 5px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-} */
-/* .signBtn {
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  font-size: 20px;
-  color: #bbb;
-  display: block;
-  margin: 0 0 0 auto;
-  margin: 0 0 0 auto;
-} */
+
 ::-webkit-scrollbar {
   width: 10px;
 }

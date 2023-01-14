@@ -23,7 +23,7 @@ const InCompletedTaskList = () => {
 
   return (
     <div>
-      <h1>未完了タスク一覧</h1>
+      <h1 style={{ margin: 0 }}>未完了タスク一覧</h1>
       {IncompletedTasks.map((IncompleteTask) => (
         <TaskItem key={IncompleteTask.id} task={IncompleteTask} />
       ))}

@@ -1,4 +1,4 @@
-import { Button, Grid } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../app/store';
@@ -28,17 +28,15 @@ const TaskInput = () => {
   const isDisabled = editedTask.name.length === 0;
 
   return (
-    <Grid container>
-      <Grid item xs={9}>
-        <input
-          type="text"
-          className={styles.taskInput}
-          value={editedTask.name}
-          onChange={handleInputChange}
-          placeholder="タスクを入力してください"
-        />
-      </Grid>
-      <Grid xs={3}>
+    <div className={styles.taskInputContainer}>
+      <input
+        type="text"
+        className={styles.taskInput}
+        value={editedTask.name}
+        onChange={handleInputChange}
+        placeholder="タスクを入力してください"
+      />
+      <div className={styles.taskButton}>
         <Button
           variant="contained"
           color="primary"
@@ -48,8 +46,8 @@ const TaskInput = () => {
         >
           CREATE
         </Button>
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 };
 
