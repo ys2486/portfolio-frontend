@@ -5,6 +5,7 @@ export type taskState = {
     completed: boolean;
     createdAt: string;
     updatedAt: string;
+    createdUser: string;
   }[];
   editedTask: {
     id: number;
@@ -12,6 +13,7 @@ export type taskState = {
     completed: boolean;
     createdAt: string;
     updatedAt: string;
+    createdUser: string;
   };
   selectedTask: {
     id: number;
@@ -19,5 +21,6 @@ export type taskState = {
     completed: boolean;
     createdAt: string;
     updatedAt: string;
+    createdUser: string;
   };
 };

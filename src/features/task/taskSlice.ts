@@ -18,6 +18,7 @@ const initialState: taskState = {
       completed: false,
       createdAt: '',
       updatedAt: '',
+      createdUser: '',
     },
   ],
   editedTask: {
@@ -26,6 +27,7 @@ const initialState: taskState = {
     completed: false,
     createdAt: '',
     updatedAt: '',
+    createdUser: '',
   },
   selectedTask: {
     id: 0,
@@ -33,15 +35,18 @@ const initialState: taskState = {
     completed: false,
     createdAt: '',
     updatedAt: '',
+    createdUser: '',
   },
 };
 
 //タスク全取得
 export const fetchAsyncGet = createAsyncThunk('task/get', async () => {
+  const loginUserId = localStorage.loginUserId;
   const res = await axios.get(`${apiUrl}/get`, {
     headers: {
       'X-AUTH-TOKEN': `Bearer ${token}`,
     },
+    params: { createdUser: loginUserId },
   });
   return res.data;
 });
@@ -49,10 +54,10 @@ export const fetchAsyncGet = createAsyncThunk('task/get', async () => {
 //タスク登録
 export const fetchAsyncInsert = createAsyncThunk(
   'task/insert',
-  async (taskName: String) => {
+  async (insertTask: taskState['editedTask']) => {
     await axios.post(
       `${apiUrl}/post`,
-      { name: taskName },
+      { name: insertTask.name, createdUser: insertTask.createdUser },
       {
         headers: {
           'Content-Type': 'application/json',
@@ -141,6 +146,7 @@ const taskSlice = createSlice({
         completed: false,
         createdAt: '',
         updatedAt: '',
+        createdUser: '',
       };
     });
   },

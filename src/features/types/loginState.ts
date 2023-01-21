@@ -3,4 +3,6 @@ export type LoginState = {
     userId: string;
     password: string;
   };
+  loginUserId: string;
+  isLoginView: boolean;
 };

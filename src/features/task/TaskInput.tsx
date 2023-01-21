@@ -16,11 +16,18 @@ const TaskInput = () => {
   const editedTask: taskState['editedTask'] = useSelector(selectEditedTask);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(editTask({ ...editedTask, id: 0, name: e.target.value }));
+    dispatch(editTask({ ...editedTask, name: e.target.value }));
   };
 
   const createClicked = async () => {
-    await dispatch(fetchAsyncInsert(editedTask.name));
+    //ログインユーザー取得
+    const loginUserId = localStorage.loginUserId;
+    await dispatch(
+      fetchAsyncInsert({
+        ...editedTask,
+        createdUser: loginUserId,
+      })
+    );
     await dispatch(editTask({ id: 0, name: '' }));
     await dispatch(fetchAsyncGet());
   };

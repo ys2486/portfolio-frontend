@@ -19,7 +19,6 @@
 }
 .appTaskContainer {
   display: flex;
-  justify-content: space-between;
   flex-flow: column;
   height: 94%;
 }
@@ -39,6 +38,8 @@
   border-radius: 5px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
   margin-bottom: 20px;
+  min-height: 20vh;
+  flex-grow: 1;
 }
 
 .completedTasks {
@@ -47,6 +48,8 @@
   border-radius: 5px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
   overflow-y: scroll;
+  min-height: 20vh;
+  flex-grow: 1;
 }
 
 ::-webkit-scrollbar {

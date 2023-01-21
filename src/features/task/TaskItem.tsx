@@ -21,6 +21,7 @@ type Props = {
     completed: boolean;
     createdAt: string;
     updatedAt: string;
+    createdUser: string;
   };
 };
 

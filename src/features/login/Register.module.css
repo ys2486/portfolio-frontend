@@ -11,14 +11,14 @@ span {
   font-family: 'Comic Neue', cursive;
 }
 .containerLogin {
-  background-color: #292f38;
+  background-color: #fff;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .appLogin {
-  background-color: #555555;
+  background-color: #292f38;
   width: 25%;
   min-width: 350px;
   height: 450px;
@@ -31,10 +31,10 @@ span {
   width: 85%;
   margin: 20px;
   font-family: 'Comic Neue', cursive;
-  background-color: #555555;
+  background-color: #292f38;
   border: 0;
   outline: 0;
-  border-bottom: 2px solid #333333;
+  border-bottom: 2px solid #fff;
   font-size: 1.4rem;
   color: #ccc;
 }

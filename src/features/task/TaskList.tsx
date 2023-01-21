@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../app/store';
+import { editLoginUserId, selectLoginUserId } from '../login/loginSlice';
 import TaskItem from './TaskItem';
 import { fetchAsyncGet, selectTasks } from './taskSlice';
 
@@ -11,10 +12,19 @@ const TaskList = () => {
 
   useEffect(() => {
     const fetchTaskProf = async () => {
+      //Local StorageのログインユーザーIDをstoreにセット
+      // await dispatch(editLoginUserId(localStorage.loginUserId));
       await dispatch(fetchAsyncGet());
     };
     fetchTaskProf();
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   const fetchTaskProf = async () => {
+  //     await dispatch(fetchAsyncGet());
+  //   };
+  //   fetchTaskProf();
+  // }, [dispatch]);
 
   return (
     <div>

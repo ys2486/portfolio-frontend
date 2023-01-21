@@ -8,6 +8,8 @@
 .containerTasks {
   background-color: #555555;
   padding: 30px;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 .taskInputContainer {
   width: 60%;
@@ -17,12 +19,12 @@
 .appTaskContainer {
   display: flex;
   justify-content: center;
+  min-height: 85vh;
 }
 .incompletedTasks {
   background-color: #292f38;
   width: 500px;
   min-width: 450px;
-  min-height: 300px;
   padding: 30px;
   margin-right: 20px;
   border-radius: 5px;
@@ -32,7 +34,6 @@
   background-color: #292f38;
   width: 500px;
   min-width: 450px;
-  min-height: 300px;
   padding: 30px;
   border-radius: 5px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
