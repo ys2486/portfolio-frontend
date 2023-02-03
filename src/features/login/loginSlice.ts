@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../app/store';
 import { LoginState } from '../types/loginState';
 
@@ -13,26 +12,50 @@ const loginURL = 'http://localhost:8080/api';
 export const fetchAsyncLogin = createAsyncThunk(
   'login/post',
   async (auth: LoginState['authen']) => {
-    const res = await axios.post(`${loginURL}/login`, auth, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return res;
+    try {
+      const res = await axios.post(`${loginURL}/login`, auth, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return res;
+    } catch (e: any) {
+      return e;
+    }
   }
 );
 
-//REGISTERボタン押下時の処理
 export const fetchAsyncRegister = createAsyncThunk(
   'register/post',
   async (auth: LoginState['authen']) => {
-    const res = await axios.post(`${loginURL}/register`, auth, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    try {
+      const res = await axios.post(`${loginURL}/register`, auth, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return res;
+    } catch (e: any) {
+      return e;
+    }
   }
 );
+
+//ログイン判定処理
+export const fetchAsyncisLogin = async () => {
+  //トークン
+  const token = localStorage.localJWT;
+  try {
+    const res = await axios.get(`${loginURL}/islogin`, {
+      headers: {
+        'X-AUTH-TOKEN': `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (e: any) {
+    return e;
+  }
+};
 
 //initialState
 const initialState: LoginState = {
@@ -63,22 +86,20 @@ const loginSlice = createSlice({
     },
   },
   extraReducers: (builders) => {
+    //ログインAPI終了後の後処理
     builders.addCase(fetchAsyncLogin.fulfilled, (state, action) => {
-      // const navigation = useNavigate();
-      //JWTトークンを、local Strorageに保存
-      localStorage.setItem(
-        'localJWT',
-        action.payload.headers['x-auth-token'] || ''
-      );
-      //ログインユーザーIDをLocal Strorageに保存
-      localStorage.setItem(
-        'loginUserId',
-        action.payload.headers['login-user-id'] || ''
-      );
-      localStorage.loginUserId && (window.location.href = '/tasks');
-      // action.payload.headers['login-user-id'] &&
-      //   (window.location.href = '/tasks');
-      // navigation('/tasks');
+      if (action.payload!.status === 200) {
+        //JWTトークンを、local Strorageに保存
+        localStorage.setItem(
+          'localJWT',
+          action.payload!.headers['x-auth-token'] || ''
+        );
+        //ログインユーザーIDをLocal Strorageに保存
+        localStorage.setItem(
+          'loginUserId',
+          action.payload!.headers['login-user-id'] || ''
+        );
+      }
     });
   },
 });

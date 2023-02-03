@@ -11,10 +11,10 @@ const TaskPC = () => {
         <TaskInput />
       </div>
       <div className={styles.appTaskContainer}>
-        <div className={styles.incompletedTasks}>
+        <div className={styles.taskListContainer}>
           <InCompletedTaskList />
         </div>
-        <div className={styles.completedTasks}>
+        <div className={styles.taskListContainer}>
           <CompletedTaskList />
         </div>
       </div>

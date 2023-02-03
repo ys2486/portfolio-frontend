@@ -1,25 +1,15 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../app/store';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import TaskItem from './TaskItem';
-import { fetchAsyncGet, selectTasks } from './taskSlice';
+import { selectTasks } from './taskSlice';
 
 const InCompletedTaskList = () => {
   const tasks = useSelector(selectTasks);
-  //Appdisptchの型が必須
-  const dispatch: AppDispatch = useDispatch();
 
   //未完了タスクのみ抽出
   const IncompletedTasks = tasks.filter((task) => {
     return task.completed === false;
   });
-
-  useEffect(() => {
-    const fetchTaskProf = async () => {
-      await dispatch(fetchAsyncGet());
-    };
-    fetchTaskProf();
-  }, [dispatch]);
 
   return (
     <div>

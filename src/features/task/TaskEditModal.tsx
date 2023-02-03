@@ -6,12 +6,13 @@ import { Grid, TextField, Typography } from '@material-ui/core';
 import { taskState } from '../types/taskState';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  fetchAsyncGet,
-  fetchAsyncUpdate,
+  fetchAsyncTasksGet,
+  fetchAsyncTaskUpdate,
   selectSelectedTask,
   selectTask,
 } from './taskSlice';
 import { AppDispatch } from '../../app/store';
+import { editBanner } from '../banner/bannerSlice';
 
 //モーダルのスタイル
 const customStyles = {
@@ -38,11 +39,23 @@ const TaskEditModal = (props: any) => {
   const selectedTask: taskState['selectedTask'] =
     useSelector(selectSelectedTask);
 
-  //モーダル内のUPDATEボタンクリック時の処理
+  //タスク変更処理
   const updateClicked = async () => {
-    await dispatch(fetchAsyncUpdate(selectedTask));
-    await dispatch(fetchAsyncGet());
-    await setEditModalIsOpen(false);
+    const res: any = await dispatch(fetchAsyncTaskUpdate(selectedTask));
+    //タスク変更成功時
+    if (res.payload.request.status === 200) {
+      await dispatch(fetchAsyncTasksGet());
+      await setEditModalIsOpen(false);
+    } else {
+      //タスク更新エラー時
+      await dispatch(
+        editBanner({
+          bannerIsopen: true,
+          bannerType: 'error',
+          bannerMessage: `タスクの更新に失敗しました。管理者に連絡してください。`,
+        })
+      );
+    }
   };
 
   //モーダルのタスク入力

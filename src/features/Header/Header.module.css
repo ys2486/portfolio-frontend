@@ -1,0 +1,17 @@
+.barStyle {
+  font-family: 'Comic Neue', cursive;
+  color: #e0f2f1 !important;
+  background-color: #121212 !important;
+  height: 8vh;
+  max-height: 64px;
+}
+
+.menuItem {
+  font-family: 'Comic Neue', cursive !important;
+}
+
+.loginUserName {
+  color: #999;
+  text-align: center;
+  margin-bottom: 5px;
+}

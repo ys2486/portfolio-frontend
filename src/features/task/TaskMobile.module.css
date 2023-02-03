@@ -8,7 +8,9 @@
 .containerTasks {
   background-color: #555555;
   padding: 15px;
-  height: 100vh;
+  /* スクロールなしにする場合 */
+  /* height: 92vh; */
+  min-height: 92vh;
   box-sizing: border-box;
 }
 
@@ -24,7 +26,8 @@
   display: flex;
   justify-content: space-between;
   flex-flow: column;
-  height: 94%;
+  /* スクロールなしにする場合 */
+  /* height: 94%; */
 }
 .appTaskContainer h1 {
   font-size: 20px;
@@ -35,25 +38,17 @@
   white-space: nowrap;
 }
 
-.incompletedTasks {
+.taskListContainer {
   background-color: #292f38;
-  overflow-y: scroll;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-  margin-bottom: 20px;
+  /* overflow-y: scroll; */
   min-height: 20vh;
-  flex-grow: 1;
 }
 
-.completedTasks {
-  background-color: #292f38;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-  overflow-y: scroll;
-  min-height: 20vh;
-  flex-grow: 1;
+.taskListContainer:nth-child(1) {
+  margin-bottom: 20px;
 }
 
 ::-webkit-scrollbar {

@@ -8,7 +8,7 @@ import { taskState } from '../types/taskState';
 //検証用
 const apiUrl = 'http://localhost:8080/api/tasks';
 //トークン
-const token = localStorage.localJWT;
+// const token = localStorage.localJWT;
 
 const initialState: taskState = {
   tasks: [
@@ -40,82 +40,129 @@ const initialState: taskState = {
 };
 
 //タスク全取得
-export const fetchAsyncGet = createAsyncThunk('task/get', async () => {
+export const fetchAsyncTasksGet = createAsyncThunk('task/get', async () => {
   const loginUserId = localStorage.loginUserId;
-  const res = await axios.get(`${apiUrl}/get`, {
-    headers: {
-      'X-AUTH-TOKEN': `Bearer ${token}`,
-    },
-    params: { createdUser: loginUserId },
-  });
-  return res.data;
+  const token = localStorage.localJWT;
+  try {
+    const res = await axios.get(`${apiUrl}/get`, {
+      headers: {
+        'X-AUTH-TOKEN': `Bearer ${token}`,
+      },
+      params: { createdUser: loginUserId },
+    });
+    return res;
+  } catch (e: any) {
+    return e;
+  }
 });
 
 //タスク登録
-export const fetchAsyncInsert = createAsyncThunk(
+export const fetchAsyncTaskInsert = createAsyncThunk(
   'task/insert',
   async (insertTask: taskState['editedTask']) => {
-    await axios.post(
-      `${apiUrl}/post`,
-      { name: insertTask.name, createdUser: insertTask.createdUser },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-AUTH-TOKEN': `Bearer ${token}`,
-        },
-      }
-    );
+    const token = localStorage.localJWT;
+    try {
+      const res = await axios.post(
+        `${apiUrl}/post`,
+        { name: insertTask.name, createdUser: insertTask.createdUser },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': `Bearer ${token}`,
+          },
+        }
+      );
+      return res;
+    } catch (e) {
+      return e;
+    }
   }
 );
 
 //タスク削除
-export const fetchAsyncDelete = createAsyncThunk(
+export const fetchAsyncTaskDelete = createAsyncThunk(
   'task/delete',
   async (taskId: number) => {
-    await axios.delete(`${apiUrl}/delete`, {
-      headers: {
-        'X-AUTH-TOKEN': `Bearer ${token}`,
-      },
-      data: { id: taskId },
-    });
+    const token = localStorage.localJWT;
+    try {
+      const res = await axios.delete(`${apiUrl}/delete`, {
+        headers: {
+          'X-AUTH-TOKEN': `Bearer ${token}`,
+        },
+        data: { id: taskId },
+      });
+      return res;
+    } catch (e) {
+      return e;
+    }
   }
 );
 
 //タスク更新
-export const fetchAsyncUpdate = createAsyncThunk(
+export const fetchAsyncTaskUpdate = createAsyncThunk(
   'task/update',
   async (updateTask: taskState['selectedTask']) => {
-    await axios.put(
-      `${apiUrl}/put`,
-      {
-        id: updateTask.id,
-        name: updateTask.name,
-      },
-      {
-        headers: {
-          'X-AUTH-TOKEN': `Bearer ${token}`,
+    const token = localStorage.localJWT;
+    try {
+      const res = await axios.put(
+        `${apiUrl}/put`,
+        {
+          id: updateTask.id,
+          name: updateTask.name,
         },
-      }
-    );
+        {
+          headers: {
+            'X-AUTH-TOKEN': `Bearer ${token}`,
+          },
+        }
+      );
+      return res;
+    } catch (e) {
+      return e;
+    }
   }
 );
 
 //タスク完了・未完了更新
-export const fetchAsyncUpdateCompleted = createAsyncThunk(
+// export const fetchAsyncTaskCompletedUpdate = createAsyncThunk(
+//   'task/updateCompleted',
+//   async (updateTask: taskState['selectedTask']) => {
+//     const token = localStorage.localJWT;
+//     await axios.put(
+//       `${apiUrl}/put/complete`,
+//       {
+//         id: updateTask.id,
+//         completed: updateTask.completed,
+//       },
+//       {
+//         headers: {
+//           'X-AUTH-TOKEN': `Bearer ${token}`,
+//         },
+//       }
+//     );
+//   }
+// );
+export const fetchAsyncTaskCompletedUpdate = createAsyncThunk(
   'task/updateCompleted',
   async (updateTask: taskState['selectedTask']) => {
-    await axios.put(
-      `${apiUrl}/put/complete`,
-      {
-        id: updateTask.id,
-        completed: updateTask.completed,
-      },
-      {
-        headers: {
-          'X-AUTH-TOKEN': `Bearer ${token}`,
+    const token = localStorage.localJWT;
+    try {
+      const res = await axios.put(
+        `${apiUrl}/put/complete`,
+        {
+          id: updateTask.id,
+          completed: updateTask.completed,
         },
-      }
-    );
+        {
+          headers: {
+            'X-AUTH-TOKEN': `Bearer ${token}`,
+          },
+        }
+      );
+      return res;
+    } catch (e) {
+      return e;
+    }
   }
 );
 
@@ -132,13 +179,10 @@ const taskSlice = createSlice({
   },
   //タスク全取得の後処理
   extraReducers: (builder) => {
-    builder.addCase(fetchAsyncGet.fulfilled, (state, action) => {
-      return {
-        ...state,
-        tasks: action.payload,
-      };
+    builder.addCase(fetchAsyncTasksGet.fulfilled, (state, action) => {
+      state.tasks = action.payload.data;
     });
-    builder.addCase(fetchAsyncUpdate.fulfilled, (state, action) => {
+    builder.addCase(fetchAsyncTaskUpdate.fulfilled, (state, action) => {
       //更新後に初期化
       state.selectedTask = {
         id: 0,

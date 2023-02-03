@@ -5,9 +5,11 @@ import { store } from './app/store';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
-import Login from './features/login/Login';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import Task from './features/task/Task';
+import { HomeRoutes } from './features/router/HomeRoutes';
+import Page404 from './features/page404/Page404';
+import HeaderLayout from './features/Header/HeaderLayout';
+import LoginPageLayout from './features/login/LoginPageLayout';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -17,8 +19,15 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/tasks" element={<Task />} />
+          <Route path="/" element={<LoginPageLayout />} />
+          {HomeRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={<HeaderLayout>{route.children}</HeaderLayout>}
+            />
+          ))}
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
     </Provider>

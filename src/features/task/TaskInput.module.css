@@ -5,6 +5,7 @@
 }
 .taskInput {
   width: 80%;
+  max-width: 1000px;
   padding: 5px 5px 5px 10px;
   font-family: 'Comic Neue', cursive;
   font-size: 15px;
