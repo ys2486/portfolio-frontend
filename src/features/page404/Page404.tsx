@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Page404 = () => {
+const Page404: React.FC = () => {
   return (
     <>
       <p>

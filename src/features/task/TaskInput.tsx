@@ -12,7 +12,7 @@ import {
   selectEditedTask,
 } from './taskSlice';
 
-const TaskInput = () => {
+const TaskInput: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const editedTask: taskState['editedTask'] = useSelector(selectEditedTask);
   const isDisabled = editedTask.name.length === 0;
@@ -25,7 +25,7 @@ const TaskInput = () => {
   //タスク登録処理
   const createClicked = async () => {
     const loginUserId = localStorage.loginUserId;
-    const res: any = await dispatch(
+    const res = await dispatch(
       fetchAsyncTaskInsert({
         ...editedTask,
         createdUser: loginUserId,
@@ -48,7 +48,7 @@ const TaskInput = () => {
   };
 
   //パスワード入力時にエンターキークリックでタスク追加処理
-  const pressEnter = (e: any) => {
+  const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (!isDisabled) {
         createClicked();

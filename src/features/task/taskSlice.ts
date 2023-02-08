@@ -3,10 +3,11 @@ import axios from 'axios';
 import { RootState } from '../../app/store';
 import { taskState } from '../types/taskState';
 
-//本番用
+//タスクAPIURL（本番）
 // const apiUrl = 'http://13.115.86.228:8080/portfolio-backend/api/tasks';
-//検証用
-const apiUrl = 'http://localhost:8080/api/tasks';
+//タスクAPIURL（テスト用）
+const apiUrl = process.env.REACT_APP_TASK_API_URL;
+// const apiUrl = 'http://localhost:8080/api/tasks';
 //トークン
 // const token = localStorage.localJWT;
 
@@ -73,7 +74,7 @@ export const fetchAsyncTaskInsert = createAsyncThunk(
         }
       );
       return res;
-    } catch (e) {
+    } catch (e: any) {
       return e;
     }
   }
@@ -92,7 +93,7 @@ export const fetchAsyncTaskDelete = createAsyncThunk(
         data: { id: taskId },
       });
       return res;
-    } catch (e) {
+    } catch (e: any) {
       return e;
     }
   }
@@ -117,7 +118,7 @@ export const fetchAsyncTaskUpdate = createAsyncThunk(
         }
       );
       return res;
-    } catch (e) {
+    } catch (e: any) {
       return e;
     }
   }
@@ -160,7 +161,7 @@ export const fetchAsyncTaskCompletedUpdate = createAsyncThunk(
         }
       );
       return res;
-    } catch (e) {
+    } catch (e: any) {
       return e;
     }
   }

@@ -4,7 +4,7 @@ import InCompletedTaskList from './IncompletedTaskList';
 import styles from './TaskTablet.module.css';
 import TaskInput from './TaskInput';
 
-const TaskTablet = () => {
+const TaskTablet: React.FC = () => {
   return (
     <div className={styles.containerTasks}>
       <div className={styles.taskInputContainer}>

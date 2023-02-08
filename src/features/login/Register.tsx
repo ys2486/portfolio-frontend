@@ -14,12 +14,13 @@ import {
 } from './loginSlice';
 import styles from './Register.module.css';
 
-const Register = () => {
+const Register: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const authen = useSelector(selectAuthen);
-  const btnDisabled = authen.userId === '' || authen.password === '';
+  const btnDisabled: boolean = authen.userId === '' || authen.password === '';
   const navigate = useNavigate();
 
+  //ユーザー登録処理
   const Register = async () => {
     const res = await dispatch(fetchAsyncRegister(authen));
     //ユーザー登録結果
@@ -30,7 +31,7 @@ const Register = () => {
       //作成したユーザーでログイン
       const res = await dispatch(fetchAsyncLogin(authen));
       //ログイン成功時
-      if (res.payload.request.status === 200) {
+      if (res.payload!.request.status === 200) {
         //tasks画面に遷移
         navigate('tasks');
         //UserIdとPasswordの初期化

@@ -5,8 +5,8 @@ import Login from './Login';
 import { selectIsLoginView } from './loginSlice';
 import Register from './Register';
 
-const LoginPageLayout = () => {
-  //ログインモードか登録モードのフラグ
+const LoginPageLayout: React.FC = () => {
+  //ログインモードかユーザー登録モードのフラグ
   const isLoginView = useSelector(selectIsLoginView);
 
   return (

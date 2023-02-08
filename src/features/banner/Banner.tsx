@@ -17,7 +17,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const Banner = () => {
+const Banner: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   //バナー表示に必要な情報
   const bannerIsOpen = useSelector(selectBannerIsopen);
@@ -31,7 +31,6 @@ const Banner = () => {
     if (reason === 'clickaway') {
       return;
     }
-
     dispatch(editBannerIsopen(false));
   };
 

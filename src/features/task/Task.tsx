@@ -10,21 +10,21 @@ import { fetchAsyncisLogin } from '../login/loginSlice';
 import { editBanner } from '../banner/bannerSlice';
 import { useNavigate } from 'react-router-dom';
 
-const Task = () => {
+const Task: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   //表示制御
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
   const navigate = useNavigate();
 
   //初期処理
   useEffect(() => {
     const fetchTaskProf = async () => {
       //ログインしているか判定
-      const res: any = await fetchAsyncisLogin();
+      const res = await fetchAsyncisLogin();
       //ログインしている場合の処理
       if (res.data === true) {
         //ユーザーに紐づく全タスクを取得し、セットする。
-        const tasksGetResult: any = await dispatch(fetchAsyncTasksGet());
+        const tasksGetResult = await dispatch(fetchAsyncTasksGet());
         // await dispatch(fetchAsyncTasksGet());
         if (tasksGetResult.payload.request.status === 200) {
           //タスク画面を表示する

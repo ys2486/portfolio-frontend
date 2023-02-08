@@ -13,10 +13,10 @@ import { Button } from '@material-ui/core';
 import { editBanner } from '../banner/bannerSlice';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const authen = useSelector(selectAuthen);
-  const btnDisabled = authen.userId === '' || authen.password === '';
+  const btnDisabled: boolean = authen.userId === '' || authen.password === '';
   const navigate = useNavigate();
 
   //ログインボタンクリック時の処理
@@ -61,9 +61,11 @@ const Login = () => {
   };
 
   //パスワード入力時にエンターキークリックでログイン処理
-  const pressEnter = (e: any) => {
+  const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      login();
+      if (!btnDisabled) {
+        login();
+      }
     }
   };
 

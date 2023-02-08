@@ -1,14 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { RootState } from '../../app/store';
 import { LoginState } from '../types/loginState';
 
-//ログインURL(本番用)
-// const loginURL = 'http://13.115.86.228:8080/portfolio-backend/api/login';
-//ログインURL(テスト用)
-const loginURL = 'http://localhost:8080/api';
+//ログインAPIURL(本番用)
+// const loginURL = process.env.REACT_APP_LOGIN_API_URL;
+//ログインAPIURL(テスト用)
+// const loginURL = process.env.REACT_APP_LOGIN_API_URL_TEST;
+const loginURL = process.env.REACT_APP_LOGIN_API_URL;
 
-//LOGINボタン押下時の処理
+//ログイン処理
 export const fetchAsyncLogin = createAsyncThunk(
   'login/post',
   async (auth: LoginState['authen']) => {
@@ -22,9 +23,15 @@ export const fetchAsyncLogin = createAsyncThunk(
     } catch (e: any) {
       return e;
     }
+    // } catch (e) {
+    //   if (Axios.isAxiosError(e)) {
+    //     return e;
+    //   }
+    // }
   }
 );
 
+//ユーザー登録処理
 export const fetchAsyncRegister = createAsyncThunk(
   'register/post',
   async (auth: LoginState['authen']) => {
@@ -41,7 +48,7 @@ export const fetchAsyncRegister = createAsyncThunk(
   }
 );
 
-//ログイン判定処理
+//ログイン済み判定処理
 export const fetchAsyncisLogin = async () => {
   //トークン
   const token = localStorage.localJWT;
@@ -88,16 +95,20 @@ const loginSlice = createSlice({
   extraReducers: (builders) => {
     //ログインAPI終了後の後処理
     builders.addCase(fetchAsyncLogin.fulfilled, (state, action) => {
-      if (action.payload!.status === 200) {
+      if (
+        //ログイン正常時のみ
+        !isAxiosError(action.payload) &&
+        action.payload!.request.status === 200
+      ) {
         //JWTトークンを、local Strorageに保存
         localStorage.setItem(
           'localJWT',
-          action.payload!.headers['x-auth-token'] || ''
+          action.payload.headers['x-auth-token'] || ''
         );
         //ログインユーザーIDをLocal Strorageに保存
         localStorage.setItem(
           'loginUserId',
-          action.payload!.headers['login-user-id'] || ''
+          action.payload.headers['login-user-id'] || ''
         );
       }
     });

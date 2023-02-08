@@ -27,7 +27,15 @@ const customStyles = {
   },
 };
 
-const TaskEditModal = (props: any) => {
+//モーダルのpropsの型
+type taskEditModalProps = {
+  editModalIsOpen: boolean;
+  setEditModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  formatCreatedAt: string;
+  formatUpdatedAt: string;
+};
+
+const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
   const {
     editModalIsOpen,
     setEditModalIsOpen,
@@ -41,7 +49,7 @@ const TaskEditModal = (props: any) => {
 
   //タスク変更処理
   const updateClicked = async () => {
-    const res: any = await dispatch(fetchAsyncTaskUpdate(selectedTask));
+    const res = await dispatch(fetchAsyncTaskUpdate(selectedTask));
     //タスク変更成功時
     if (res.payload.request.status === 200) {
       await dispatch(fetchAsyncTasksGet());

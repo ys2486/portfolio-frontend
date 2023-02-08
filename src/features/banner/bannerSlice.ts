@@ -25,12 +25,6 @@ const bannerSlice = createSlice({
     editBannerIsopen(state, action) {
       state.bannerIsopen = action.payload;
     },
-    editBannerType(state, action) {
-      state.bannerType = action.payload;
-    },
-    editBannerMessage(state, action) {
-      state.bannerMessage = action.payload;
-    },
     editBanner(state, action) {
       state.bannerIsopen = action.payload.bannerIsopen;
       state.bannerType = action.payload.bannerType;
@@ -39,12 +33,7 @@ const bannerSlice = createSlice({
   },
 });
 
-export const {
-  editBannerIsopen,
-  editBannerType,
-  editBannerMessage,
-  editBanner,
-} = bannerSlice.actions;
+export const { editBannerIsopen, editBanner } = bannerSlice.actions;
 export const selectBannerIsopen = (state: RootState) =>
   state.banner.bannerIsopen;
 export const selectBannerType = (state: RootState) => state.banner.bannerType;

@@ -4,7 +4,7 @@ import InCompletedTaskList from './IncompletedTaskList';
 import styles from './TaskPC.module.css';
 import TaskInput from './TaskInput';
 
-const TaskPC = () => {
+const TaskPC: React.FC = () => {
   return (
     <div className={styles.containerTasks}>
       <div className={styles.taskInputContainer}>

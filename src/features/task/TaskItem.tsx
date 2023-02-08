@@ -14,7 +14,8 @@ import Button from '@mui/material/Button';
 import TaskEditModal from './TaskEditModal';
 import { editBanner } from '../banner/bannerSlice';
 
-type Props = {
+//propsの型
+type TaskItemProps = {
   key: number;
   task: {
     id: number;
@@ -26,15 +27,15 @@ type Props = {
   };
 };
 
-const TaskItem = (props: Props) => {
+const TaskItem: React.FC<TaskItemProps> = (props) => {
   const { task } = props;
   const dispatch: AppDispatch = useDispatch();
   //モーダルのstate
-  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);
 
   //登録日時と更新日時を見やすいフォーマットに変換
-  let formatCreatedAt;
-  let formatUpdatedAt;
+  let formatCreatedAt: string = '';
+  let formatUpdatedAt: string = '';
   if (task.createdAt) {
     formatCreatedAt = new Date(task.createdAt).toLocaleString();
   }
@@ -44,7 +45,7 @@ const TaskItem = (props: Props) => {
 
   //Deleteボタンクリック時の処理
   const deleteClicked = async () => {
-    const res: any = await dispatch(fetchAsyncTaskDelete(task.id));
+    const res = await dispatch(fetchAsyncTaskDelete(task.id));
     //タスク削除成功時
     if (res.payload.request.status === 200) {
       await dispatch(fetchAsyncTasksGet());
@@ -68,7 +69,7 @@ const TaskItem = (props: Props) => {
 
   //未完了タスクの「完了」ボタンクリック時の処理
   const completeClicked = async () => {
-    const res: any = await dispatch(
+    const res = await dispatch(
       fetchAsyncTaskCompletedUpdate({ ...task, completed: true })
     );
     //タスク完了成功時
@@ -88,7 +89,7 @@ const TaskItem = (props: Props) => {
 
   //完了タスクの「戻す」ボタンクリック時の処理
   const inCompleteClicked = async () => {
-    const res: any = await dispatch(
+    const res = await dispatch(
       fetchAsyncTaskCompletedUpdate({ ...task, completed: false })
     );
     //タスク未完了成功時

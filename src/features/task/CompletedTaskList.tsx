@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import TaskItem from './TaskItem';
 import { selectTasks } from './taskSlice';
 
-const CompletedTaskList = () => {
+const CompletedTaskList: React.FC = () => {
   const tasks = useSelector(selectTasks);
 
   //完了タスクのみ抽出
