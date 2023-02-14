@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios, { isAxiosError } from 'axios';
+import axios from 'axios';
 import { RootState } from '../../app/store';
 import { LoginState } from '../types/loginState';
 
@@ -23,11 +23,6 @@ export const fetchAsyncLogin = createAsyncThunk(
     } catch (e: any) {
       return e;
     }
-    // } catch (e) {
-    //   if (Axios.isAxiosError(e)) {
-    //     return e;
-    //   }
-    // }
   }
 );
 
@@ -72,6 +67,7 @@ const initialState: LoginState = {
   },
   loginUserId: '',
   isLoginView: true,
+  isLogin: false,
 };
 
 //ログインスライス
@@ -91,13 +87,16 @@ const loginSlice = createSlice({
     toggleMode(state) {
       state.isLoginView = !state.isLoginView;
     },
+    editIsLogin(state, action) {
+      state.isLogin = action.payload;
+    },
   },
   extraReducers: (builders) => {
     //ログインAPI終了後の後処理
     builders.addCase(fetchAsyncLogin.fulfilled, (state, action) => {
       if (
         //ログイン正常時のみ
-        !isAxiosError(action.payload) &&
+        !axios.isAxiosError(action.payload) &&
         action.payload!.request.status === 200
       ) {
         //JWTトークンを、local Strorageに保存
@@ -115,10 +114,16 @@ const loginSlice = createSlice({
   },
 });
 
-export const { editUserId, editPassword, editLoginUserId, toggleMode } =
-  loginSlice.actions;
+export const {
+  editUserId,
+  editPassword,
+  editLoginUserId,
+  toggleMode,
+  editIsLogin,
+} = loginSlice.actions;
 export const selectAuthen = (state: RootState) => state.login.authen;
 export const selectLoginUserId = (state: RootState) => state.login.loginUserId;
 export const selectIsLoginView = (state: RootState) => state.login.isLoginView;
+export const selectIsLogin = (state: RootState) => state.login.isLogin;
 
 export default loginSlice.reducer;

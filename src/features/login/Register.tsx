@@ -1,83 +1,51 @@
 import { Button } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../../app/store';
-import { editBanner } from '../banner/bannerSlice';
+import { useRegisterUser } from '../hooks/useRegisterUser';
 import {
   editPassword,
   editUserId,
-  fetchAsyncLogin,
-  fetchAsyncRegister,
   selectAuthen,
   toggleMode,
 } from './loginSlice';
 import styles from './Register.module.css';
+import { BsExclamationCircle } from 'react-icons/bs';
+
+//バリデーション用
+type Inputs = {
+  username: string;
+  password: string;
+};
 
 const Register: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const authen = useSelector(selectAuthen);
-  const btnDisabled: boolean = authen.userId === '' || authen.password === '';
-  const navigate = useNavigate();
-
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const btnDisabled: boolean =
+    isValid || authen.userId === '' || authen.password === '';
+  // const btnDisabled: boolean = authen.userId === '' || authen.password === '';
   //ユーザー登録処理
-  const Register = async () => {
-    const res = await dispatch(fetchAsyncRegister(authen));
-    //ユーザー登録結果
-    const registerResult = res.payload.request.status;
+  const { registerUser } = useRegisterUser();
 
-    //①ユーザー登録正常時
-    if (registerResult === 200) {
-      //作成したユーザーでログイン
-      const res = await dispatch(fetchAsyncLogin(authen));
-      //ログイン成功時
-      if (res.payload!.request.status === 200) {
-        //tasks画面に遷移
-        navigate('tasks');
-        //UserIdとPasswordの初期化
-        dispatch(editUserId(''));
-        dispatch(editPassword(''));
-      } else {
-        //ログイン失敗時
-        dispatch(
-          editBanner({
-            bannerIsopen: true,
-            bannerType: 'error',
-            bannerMessage: 'エラーが発生しました。管理者に連絡してください。',
-          })
-        );
-        //UserIdとPasswordの初期化
-        dispatch(editUserId(''));
-        dispatch(editPassword(''));
-      }
-    } else if (registerResult === 500) {
-      //②既にそのユーザーIDが登録されている場合
-      //バナー表示
-      dispatch(
-        editBanner({
-          bannerIsopen: true,
-          bannerType: 'error',
-          bannerMessage: `「${authen.userId}」は既に使用されているUserIdとなります。
-          別のUserIdを使用してください。`,
-        })
-      );
-      //UserIdとPasswordの初期化
-      dispatch(editUserId(''));
-      dispatch(editPassword(''));
+  //バリデーション用
+  const {
+    register,
+    formState: { errors },
+  } = useForm<Inputs>({
+    mode: 'onChange',
+    criteriaMode: 'all',
+  });
+
+  //バリデーション結果制御
+  useEffect(() => {
+    if (errors.username?.message || errors.password?.message) {
+      setIsValid(true);
     } else {
-      //③その他エラー
-      dispatch(
-        editBanner({
-          bannerIsopen: true,
-          bannerType: 'error',
-          bannerMessage: 'エラーが発生しました。管理者に連絡してください。',
-        })
-      );
-      //UserIdとPasswordの初期化
-      dispatch(editUserId(''));
-      dispatch(editPassword(''));
+      setIsValid(false);
     }
-  };
+  }, [errors.username?.message, errors.password?.message]);
 
   return (
     <>
@@ -88,28 +56,52 @@ const Register: React.FC = () => {
           <input
             type="text"
             className={styles.inputLog}
-            name="username"
-            placeholder=""
-            required
-            onChange={(e) => dispatch(editUserId(e.target.value))}
             value={authen.userId}
+            // バリデーション用
+            {...register('username', {
+              onChange: (e) => dispatch(editUserId(e.target.value)),
+              required: { value: true, message: '入力が必須の項目です' },
+              pattern: {
+                value: /^[0-9a-zA-Z]*$/,
+                message: '半角英数のみで入力してください',
+              },
+            })}
           />
+          {errors.username?.message && (
+            <div className={styles.validMessage}>
+              <BsExclamationCircle />
+              {errors.username.message}
+            </div>
+          )}
           <span>Password</span>
           <input
             type="password"
             className={styles.inputLog}
-            name="username"
-            placeholder=""
-            required
-            onChange={(e) => dispatch(editPassword(e.target.value))}
             value={authen.password}
+            {...register('password', {
+              onChange: (e) => dispatch(editPassword(e.target.value)),
+              required: {
+                value: true,
+                message: '入力が必須の項目です',
+              },
+              pattern: {
+                value: /^[0-9a-zA-Z]*$/,
+                message: '半角英数のみで入力してください',
+              },
+            })}
           />
+          {errors.password?.message && (
+            <div className={styles.validMessage}>
+              <BsExclamationCircle />
+              {errors.password.message}
+            </div>
+          )}
           <div className={styles.switch}>
             <Button
               variant="contained"
               disabled={btnDisabled}
               color="primary"
-              onClick={Register}
+              onClick={registerUser}
             >
               Register
             </Button>

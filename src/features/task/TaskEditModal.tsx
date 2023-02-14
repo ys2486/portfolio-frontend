@@ -5,14 +5,9 @@ import Button from '@mui/material/Button';
 import { Grid, TextField, Typography } from '@material-ui/core';
 import { taskState } from '../types/taskState';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchAsyncTasksGet,
-  fetchAsyncTaskUpdate,
-  selectSelectedTask,
-  selectTask,
-} from './taskSlice';
+import { selectSelectedTask, selectTask } from './taskSlice';
 import { AppDispatch } from '../../app/store';
-import { editBanner } from '../banner/bannerSlice';
+import { useUpdateTask } from '../hooks/useUpdateTask';
 
 //モーダルのスタイル
 const customStyles = {
@@ -47,31 +42,7 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
   const selectedTask: taskState['selectedTask'] =
     useSelector(selectSelectedTask);
 
-  //タスク変更処理
-  const updateClicked = async () => {
-    const res = await dispatch(fetchAsyncTaskUpdate(selectedTask));
-    //タスク変更成功時
-    if (res.payload.request.status === 200) {
-      await dispatch(fetchAsyncTasksGet());
-      await setEditModalIsOpen(false);
-    } else {
-      //タスク更新エラー時
-      await dispatch(
-        editBanner({
-          bannerIsopen: true,
-          bannerType: 'error',
-          bannerMessage: `タスクの更新に失敗しました。管理者に連絡してください。`,
-        })
-      );
-    }
-  };
-
-  //モーダルのタスク入力
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(
-      selectTask({ ...selectedTask, id: selectedTask.id, name: e.target.value })
-    );
-  };
+  const { updateTask } = useUpdateTask(setEditModalIsOpen);
 
   return (
     <Modal
@@ -85,7 +56,15 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
           label="タスク"
           fullWidth
           value={selectedTask.name}
-          onChange={handleInputChange}
+          onChange={(e) =>
+            dispatch(
+              selectTask({
+                ...selectedTask,
+                id: selectedTask.id,
+                name: e.target.value,
+              })
+            )
+          }
         />
         {formatCreatedAt && (
           <Typography variant="h6">登録日時：{formatCreatedAt}</Typography>
@@ -95,7 +74,7 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
         )}
         <Grid container justifyContent="center">
           <Grid item xs={3}>
-            <Button variant="contained" fullWidth onClick={updateClicked}>
+            <Button variant="contained" fullWidth onClick={updateTask}>
               UPDATE
             </Button>
           </Grid>

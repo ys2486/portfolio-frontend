@@ -48,3 +48,9 @@ span {
   text-align: center;
   cursor: pointer;
 }
+.validMessage {
+  text-align: center;
+  color: rgb(195, 3, 3);
+  font-size: 0.95rem;
+  margin-top: -15px;
+}

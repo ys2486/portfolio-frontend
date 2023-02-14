@@ -3,13 +3,8 @@ import axios from 'axios';
 import { RootState } from '../../app/store';
 import { taskState } from '../types/taskState';
 
-//タスクAPIURL（本番）
-// const apiUrl = 'http://13.115.86.228:8080/portfolio-backend/api/tasks';
-//タスクAPIURL（テスト用）
+//タスクAPIURL
 const apiUrl = process.env.REACT_APP_TASK_API_URL;
-// const apiUrl = 'http://localhost:8080/api/tasks';
-//トークン
-// const token = localStorage.localJWT;
 
 const initialState: taskState = {
   tasks: [
@@ -125,24 +120,6 @@ export const fetchAsyncTaskUpdate = createAsyncThunk(
 );
 
 //タスク完了・未完了更新
-// export const fetchAsyncTaskCompletedUpdate = createAsyncThunk(
-//   'task/updateCompleted',
-//   async (updateTask: taskState['selectedTask']) => {
-//     const token = localStorage.localJWT;
-//     await axios.put(
-//       `${apiUrl}/put/complete`,
-//       {
-//         id: updateTask.id,
-//         completed: updateTask.completed,
-//       },
-//       {
-//         headers: {
-//           'X-AUTH-TOKEN': `Bearer ${token}`,
-//         },
-//       }
-//     );
-//   }
-// );
 export const fetchAsyncTaskCompletedUpdate = createAsyncThunk(
   'task/updateCompleted',
   async (updateTask: taskState['selectedTask']) => {

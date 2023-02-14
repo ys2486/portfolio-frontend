@@ -1,64 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../app/store';
 import {
   editPassword,
   editUserId,
-  fetchAsyncLogin,
   selectAuthen,
   toggleMode,
 } from './loginSlice';
 import styles from './Login.module.css';
 import { Button } from '@material-ui/core';
-import { editBanner } from '../banner/bannerSlice';
-import { useNavigate } from 'react-router-dom';
+import { useLogin } from '../hooks/useLogin';
+import { useForm } from 'react-hook-form';
+import { BsExclamationCircle } from 'react-icons/bs';
+
+//バリデーション用
+type Inputs = {
+  username: string;
+  password: string;
+};
 
 const Login: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const authen = useSelector(selectAuthen);
-  const btnDisabled: boolean = authen.userId === '' || authen.password === '';
-  const navigate = useNavigate();
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const btnDisabled: boolean =
+    isValid || authen.userId === '' || authen.password === '';
+  //ログイン処理
+  const { login } = useLogin();
 
-  //ログインボタンクリック時の処理
-  const login = async () => {
-    //ユーザーログイン処理
-    const res = await dispatch(fetchAsyncLogin(authen));
-    //ログイン結果
-    const loginResult: number = res.payload.request.status;
+  //バリデーション用
+  const {
+    register,
+    formState: { errors },
+  } = useForm<Inputs>({
+    mode: 'onChange',
+    criteriaMode: 'all',
+  });
 
-    //①ログイン正常時
-    if (loginResult === 200) {
-      //tasks画面に遷移
-      navigate('tasks');
-      //UserIdとPasswordの初期化
-      dispatch(editUserId(''));
-      dispatch(editPassword(''));
-    } else if (loginResult === 401) {
-      //②ログイン情報が存在しない場合
-      dispatch(
-        editBanner({
-          bannerIsopen: true,
-          bannerType: 'error',
-          bannerMessage: 'UserIdとPasswordに一致するユーザーが見つかりません',
-        })
-      );
-      //UserIdとPasswordの初期化
-      dispatch(editUserId(''));
-      dispatch(editPassword(''));
+  //バリデーション結果制御
+  useEffect(() => {
+    if (errors.username?.message || errors.password?.message) {
+      setIsValid(true);
     } else {
-      //③その他エラー時
-      dispatch(
-        editBanner({
-          bannerIsopen: true,
-          bannerType: 'error',
-          bannerMessage: 'エラーが発生しました。管理者に連絡してください。',
-        })
-      );
-      //UserIdとPasswordの初期化
-      dispatch(editUserId(''));
-      dispatch(editPassword(''));
+      setIsValid(false);
     }
-  };
+  }, [errors.username?.message, errors.password?.message]);
 
   //パスワード入力時にエンターキークリックでログイン処理
   const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -70,50 +56,73 @@ const Login: React.FC = () => {
   };
 
   return (
-    <>
-      <div className={styles.containerLogin}>
-        <div className={styles.appLogin}>
-          <h1>{true ? 'Login' : 'Register'}</h1>
-          <span>UserId</span>
-          <input
-            type="text"
-            className={styles.inputLog}
-            name="username"
-            placeholder=""
-            required
-            onChange={(e) => dispatch(editUserId(e.target.value))}
-            value={authen.userId}
-          />
-          <span>Password</span>
-          <input
-            type="password"
-            className={styles.inputLog}
-            name="username"
-            placeholder=""
-            required
-            onChange={(e) => dispatch(editPassword(e.target.value))}
-            onKeyPress={pressEnter}
-            value={authen.password}
-          />
-          <div className={styles.switch}>
-            <Button
-              variant="contained"
-              disabled={btnDisabled}
-              color="primary"
-              onClick={login}
-            >
-              Login
-            </Button>
+    <div className={styles.containerLogin}>
+      <div className={styles.appLogin}>
+        <h1>{true ? 'Login' : 'Register'}</h1>
+        <span>UserId</span>
+        <input
+          type="text"
+          className={styles.inputLog}
+          value={authen.userId}
+          // バリデーション用
+          {...register('username', {
+            onChange: (e) => dispatch(editUserId(e.target.value)),
+            required: { value: true, message: '入力が必須の項目です' },
+            pattern: {
+              value: /^[0-9a-zA-Z]*$/,
+              message: '半角英数のみで入力してください',
+            },
+          })}
+        />
+        {errors.username?.message && (
+          <p className={styles.validMessage}>
+            <BsExclamationCircle />
+            {errors.username.message}
+          </p>
+        )}
+        <span>Password</span>
+        <input
+          type="password"
+          className={styles.inputLog}
+          onKeyPress={pressEnter}
+          value={authen.password}
+          // バリデーション用
+          {...register('password', {
+            onChange: (e) => dispatch(editPassword(e.target.value)),
+            required: {
+              value: true,
+              message: '入力が必須の項目です',
+            },
+            pattern: {
+              value: /^[0-9a-zA-Z]*$/,
+              message: '半角英数のみで入力してください',
+            },
+          })}
+        />
+        {errors.password?.message && (
+          <div className={styles.validMessage}>
+            <BsExclamationCircle />
+            {errors.password.message}
           </div>
-          <span
-            className={styles.switchText}
-            onClick={() => dispatch(toggleMode())}
+        )}
+        <div className={styles.switch}>
+          <Button
+            variant="contained"
+            disabled={btnDisabled}
+            color="primary"
+            onClick={login}
           >
-            Create Account?
-          </span>
+            Login
+          </Button>
         </div>
+        <span
+          className={styles.switchText}
+          onClick={() => dispatch(toggleMode())}
+        >
+          Create Account?
+        </span>
       </div>
-    </>
+    </div>
   );
 };
 

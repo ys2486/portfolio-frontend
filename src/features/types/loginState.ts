@@ -5,4 +5,5 @@ export type LoginState = {
   };
   loginUserId: string;
   isLoginView: boolean;
+  isLogin: boolean;
 };

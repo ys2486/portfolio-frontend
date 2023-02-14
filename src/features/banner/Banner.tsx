@@ -37,7 +37,7 @@ const Banner: React.FC = () => {
   return (
     <Snackbar
       open={bannerIsOpen}
-      autoHideDuration={3000}
+      autoHideDuration={1500}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >
