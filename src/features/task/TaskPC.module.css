@@ -27,7 +27,7 @@
   padding: 30px;
   border-radius: 5px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-  flex-grow: 1;
+  flex: 1;
 }
 
 .taskListContainer:nth-child(1) {

@@ -13,7 +13,7 @@ const TaskInput: React.FC = () => {
   const isDisabled = editedTask.name.length === 0;
   const { createTask } = useCreateTask();
 
-  //パスワード入力時にエンターキークリックでタスク追加処理
+  //パスワード入力時にエンターキークリックでタスク登録処理
   const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (!isDisabled) {

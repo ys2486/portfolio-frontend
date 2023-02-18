@@ -13,7 +13,7 @@ import {
 import styles from './Register.module.css';
 import { BsExclamationCircle } from 'react-icons/bs';
 
-//バリデーション用
+//バリデーション用タイプ
 type Inputs = {
   username: string;
   password: string;
@@ -25,8 +25,6 @@ const Register: React.FC = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const btnDisabled: boolean =
     isValid || authen.userId === '' || authen.password === '';
-  // const btnDisabled: boolean = authen.userId === '' || authen.password === '';
-  //ユーザー登録処理
   const { registerUser } = useRegisterUser();
 
   //バリデーション用
@@ -52,12 +50,12 @@ const Register: React.FC = () => {
       <div className={styles.containerLogin}>
         <div className={styles.appLogin}>
           <h1>Register</h1>
-          <span>UserId</span>
+          <p className={styles.subjectTitle}>UserId</p>
           <input
             type="text"
             className={styles.inputLog}
             value={authen.userId}
-            // バリデーション用
+            // ユーザーIDバリデーション
             {...register('username', {
               onChange: (e) => dispatch(editUserId(e.target.value)),
               required: { value: true, message: '入力が必須の項目です' },
@@ -67,17 +65,19 @@ const Register: React.FC = () => {
               },
             })}
           />
+          {/* バリデーションエラーメッセージ */}
           {errors.username?.message && (
             <div className={styles.validMessage}>
               <BsExclamationCircle />
               {errors.username.message}
             </div>
           )}
-          <span>Password</span>
+          <p className={styles.subjectTitle}>Password</p>
           <input
             type="password"
             className={styles.inputLog}
             value={authen.password}
+            // パスワードバリデーション
             {...register('password', {
               onChange: (e) => dispatch(editPassword(e.target.value)),
               required: {
@@ -90,6 +90,7 @@ const Register: React.FC = () => {
               },
             })}
           />
+          {/* バリデーションエラーメッセージ */}
           {errors.password?.message && (
             <div className={styles.validMessage}>
               <BsExclamationCircle />

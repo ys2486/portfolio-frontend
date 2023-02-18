@@ -41,7 +41,6 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
   const dispatch: AppDispatch = useDispatch();
   const selectedTask: taskState['selectedTask'] =
     useSelector(selectSelectedTask);
-
   const { updateTask } = useUpdateTask(setEditModalIsOpen);
 
   return (

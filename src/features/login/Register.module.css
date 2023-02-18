@@ -10,6 +10,11 @@ span {
   font-size: 15px;
   font-family: 'Comic Neue', cursive;
 }
+.subjectTitle {
+  color: white;
+  font-size: 15px;
+  font-family: 'Comic Neue', cursive;
+}
 .containerLogin {
   background-color: #fff;
   height: 100vh;
@@ -53,4 +58,12 @@ span {
   color: rgb(195, 3, 3);
   font-size: 0.95rem;
   margin-top: -15px;
+}
+
+@media screen and (max-width: 519px) {
+  /* スマホ用CSS */
+  .appLogin {
+    min-width: initial;
+    width: 70%;
+  }
 }

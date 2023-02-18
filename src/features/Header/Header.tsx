@@ -9,9 +9,9 @@ import Menu from '@mui/material/Menu';
 import { Avatar, Badge, Grid } from '@material-ui/core';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import Banner from '../banner/Banner';
+import Cookies from 'js-cookie';
 import { useSelector } from 'react-redux';
-import { selectIsLogin } from '../login/loginSlice';
+import { selectLoginUserId } from '../login/loginSlice';
 
 //ユーザーアイコン右下の緑色マークのスタイル
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -46,9 +46,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 const Header: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
-  //ログイン済みユーザーID
-  const loginUser = localStorage.loginUserId;
-  const isLogin = useSelector(selectIsLogin);
+  const loginuseId = useSelector(selectLoginUserId);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -61,73 +59,67 @@ const Header: React.FC = () => {
   //ログアウト時の処理
   const logout = () => {
     setAnchorEl(null);
-    localStorage.removeItem('localJWT');
-    localStorage.removeItem('loginUserId');
+    Cookies.remove('login_user');
+    Cookies.remove('access_token');
     navigate('/');
   };
 
   return (
-    <>
-      {isLogin && (
-        <AppBar position="static" className={styles.barStyle}>
-          <Toolbar>
-            {/* Todo List文言エリア */}
-            <Grid container alignItems="center">
-              <Grid item sm={11} xs={10}>
-                <Typography
-                  variant="h6"
-                  align="center"
-                  style={{ fontFamily: "'Comic Neue', cursive" }}
-                >
-                  Todo List
-                </Typography>
-              </Grid>
-              {/* ユーザーアイコンエリア */}
-              <Grid item sm={1} xs={2}>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <StyledBadge
-                    overlap="circular"
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    variant="dot"
-                  >
-                    <Avatar alt={loginUser} src="*" />
-                  </StyledBadge>
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <p className={styles.loginUserName}>{loginUser}</p>
-                  <MenuItem onClick={logout} className={styles.menuItem}>
-                    Logout
-                  </MenuItem>
-                </Menu>
-              </Grid>
-            </Grid>
-          </Toolbar>
-          {/* バナー */}
-          <Banner />
-        </AppBar>
-      )}
-    </>
+    <AppBar position="static" className={styles.barStyle}>
+      <Toolbar>
+        {/* Todo List文言エリア */}
+        <Grid container alignItems="center">
+          <Grid item sm={11} xs={10}>
+            <Typography
+              variant="h6"
+              align="center"
+              style={{ fontFamily: "'Comic Neue', cursive" }}
+            >
+              Todo List
+            </Typography>
+          </Grid>
+          {/* ユーザーアイコンエリア */}
+          <Grid item sm={1} xs={2}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <StyledBadge
+                overlap="circular"
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                variant="dot"
+              >
+                <Avatar alt={loginuseId} src="*" />
+              </StyledBadge>
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <p className={styles.loginUserName}>{loginuseId}</p>
+              <MenuItem onClick={logout} className={styles.menuItem}>
+                Logout
+              </MenuItem>
+            </Menu>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
   );
 };
 

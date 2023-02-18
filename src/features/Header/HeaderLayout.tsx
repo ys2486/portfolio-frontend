@@ -1,4 +1,7 @@
-import React, { memo, ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useIsLoginCheck } from '../hooks/useIsLoginCheck';
+import { selectIsLogin } from '../login/loginSlice';
 import Header from './Header';
 import styles from './HeaderLayout.module.css';
 
@@ -8,12 +11,23 @@ type HeaderLayoutProps = {
 
 const HeaderLayout: React.FC<HeaderLayoutProps> = (props) => {
   const { children } = props;
+  const isLogin = useSelector(selectIsLogin);
+  const { isLoginCheck } = useIsLoginCheck();
+
+  useEffect(() => {
+    isLoginCheck();
+  }, [isLoginCheck]);
 
   return (
-    <div className={styles.HeaderLayoutContainer}>
-      <Header />
-      {children}
-    </div>
+    <>
+      {/* ログイン済の時のみ画面表示 */}
+      {isLogin && (
+        <div className={styles.HeaderLayoutContainer}>
+          <Header />
+          {children}
+        </div>
+      )}
+    </>
   );
 };
 

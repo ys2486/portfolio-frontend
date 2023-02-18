@@ -1,53 +1,45 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../app/store';
 import { LoginState } from '../types/loginState';
+import Cookies from 'js-cookie';
 
-//ログインAPIURL(本番用)
-// const loginURL = process.env.REACT_APP_LOGIN_API_URL;
-//ログインAPIURL(テスト用)
-// const loginURL = process.env.REACT_APP_LOGIN_API_URL_TEST;
+//ログインAPIURL
 const loginURL = process.env.REACT_APP_LOGIN_API_URL;
 
 //ログイン処理
-export const fetchAsyncLogin = createAsyncThunk(
-  'login/post',
-  async (auth: LoginState['authen']) => {
-    try {
-      const res = await axios.post(`${loginURL}/login`, auth, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return res;
-    } catch (e: any) {
-      return e;
-    }
+export const fetchAsyncLogin = async (auth: LoginState['authen']) => {
+  try {
+    const res = await axios.post(`${loginURL}/login`, auth, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return res;
+  } catch (e: any) {
+    return e;
   }
-);
+};
 
 //ユーザー登録処理
-export const fetchAsyncRegister = createAsyncThunk(
-  'register/post',
-  async (auth: LoginState['authen']) => {
-    try {
-      const res = await axios.post(`${loginURL}/register`, auth, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return res;
-    } catch (e: any) {
-      return e;
-    }
+export const fetchAsyncRegister = async (auth: LoginState['authen']) => {
+  try {
+    const res = await axios.post(`${loginURL}/register`, auth, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return res;
+  } catch (e: any) {
+    return e;
   }
-);
+};
 
 //ログイン済み判定処理
 export const fetchAsyncisLogin = async () => {
   //トークン
-  const token = localStorage.localJWT;
   try {
+    const token = Cookies.get('access_token');
     const res = await axios.get(`${loginURL}/islogin`, {
       headers: {
         'X-AUTH-TOKEN': `Bearer ${token}`,
@@ -90,27 +82,6 @@ const loginSlice = createSlice({
     editIsLogin(state, action) {
       state.isLogin = action.payload;
     },
-  },
-  extraReducers: (builders) => {
-    //ログインAPI終了後の後処理
-    builders.addCase(fetchAsyncLogin.fulfilled, (state, action) => {
-      if (
-        //ログイン正常時のみ
-        !axios.isAxiosError(action.payload) &&
-        action.payload!.request.status === 200
-      ) {
-        //JWTトークンを、local Strorageに保存
-        localStorage.setItem(
-          'localJWT',
-          action.payload.headers['x-auth-token'] || ''
-        );
-        //ログインユーザーIDをLocal Strorageに保存
-        localStorage.setItem(
-          'loginUserId',
-          action.payload.headers['login-user-id'] || ''
-        );
-      }
-    });
   },
 });
 

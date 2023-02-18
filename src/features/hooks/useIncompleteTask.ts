@@ -2,22 +2,45 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../app/store';
 import { editBanner } from '../banner/bannerSlice';
-import {
-  fetchAsyncTaskCompletedUpdate,
-  fetchAsyncTasksGet,
-} from '../task/taskSlice';
+import { fetchAsyncTaskCompletedUpdate } from '../task/taskSlice';
 import { taskState } from '../types/taskState';
+import { useGetTask } from './useGetTask';
+import { useIsCookiesCheck } from './useIsCookiesCheck';
 
+// -----------------------------------------------------------------
+// タスク未完了処理
+// 　・概要　：完了タスクの「戻す」ボタンをクリックした場合、そのタスクの完了フラグを「未完了」に戻す処理
+// 　・引数　：未完了に戻したいタスク情報
+// 　　　　　　updateTask:{
+// 　　　　　　　　id: number;
+// 　　　　　　　　name: string;
+// 　　　　　　　　completed: boolean;
+// 　　　　　　　　createdAt: string;
+// 　　　　　　　　updatedAt: string;
+// 　　　　　　　　createdUser: string;
+// 　　　　　　}
+// 　・戻り値：なし
+// -----------------------------------------------------------------
 export const useIncompleteTask = (updateTask: taskState['selectedTask']) => {
   const dispatch: AppDispatch = useDispatch();
+  const { getTask } = useGetTask();
+  const { isCookiesCheck } = useIsCookiesCheck();
 
   const incompleteTask = useCallback(async () => {
+    //認証に必要な情報がCookiesに存在しているかチェック
+    const checkResult = await isCookiesCheck();
+    if (!checkResult) {
+      //エラーの場合処理終了
+      throw new Error();
+    }
+    //タスク未完了処理
     const res = await dispatch(
       fetchAsyncTaskCompletedUpdate({ ...updateTask, completed: false })
     );
     //タスク未完了成功時
-    if (res.payload.request.status === 200) {
-      await dispatch(fetchAsyncTasksGet());
+    if (res.payload?.request?.status === 200) {
+      // await dispatch(fetchAsyncTasksGet());
+      await getTask();
     } else {
       //タスク未完了エラー時
       await dispatch(
@@ -28,6 +51,6 @@ export const useIncompleteTask = (updateTask: taskState['selectedTask']) => {
         })
       );
     }
-  }, [dispatch, updateTask]);
+  }, [dispatch, updateTask, getTask, isCookiesCheck]);
   return { incompleteTask };
 };

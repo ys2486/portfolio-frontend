@@ -10,6 +10,12 @@ import {
 } from '../login/loginSlice';
 import { useLogin } from './useLogin';
 
+// -----------------------------------------------------------------
+// ユーザー登録処理
+// 　・概要　　：ユーザー登録画面で入力されたユーザーIDとパスワードを用いたユーザー登録処理
+// 　・引数　　：なし
+// 　・戻り値　：なし
+// -----------------------------------------------------------------
 export const useRegisterUser = () => {
   const dispatch: AppDispatch = useDispatch();
   const authen = useSelector(selectAuthen);
@@ -17,9 +23,9 @@ export const useRegisterUser = () => {
 
   //ユーザー登録処理
   const registerUser = useCallback(async () => {
-    const res = await dispatch(fetchAsyncRegister(authen));
+    const res = await fetchAsyncRegister(authen);
     //ユーザー登録結果
-    const registerResult: number = res.payload.request.status;
+    const registerResult: number = res.request?.status;
 
     if (registerResult === 200) {
       //①ユーザー登録正常時

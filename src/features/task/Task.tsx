@@ -3,18 +3,15 @@ import useMedia from 'use-media';
 import TaskPC from './TaskPC';
 import TaskMobile from './TaskMobile';
 import TaskTablet from './TaskTablet';
-import { useSelector } from 'react-redux';
-import { selectIsLogin } from '../login/loginSlice';
-import { useInitTask } from '../hooks/useInitTask';
+import { useGetTask } from '../hooks/useGetTask';
 
 const Task: React.FC = () => {
-  const isLogin = useSelector(selectIsLogin);
-  const { initTask } = useInitTask();
+  const { getTask } = useGetTask();
 
   //初期処理
   useEffect(() => {
-    initTask();
-  }, [initTask]);
+    getTask();
+  }, [getTask]);
 
   //レスポンシブ定義
   const mediaQueries = {
@@ -28,13 +25,9 @@ const Task: React.FC = () => {
 
   return (
     <>
-      {isLogin && (
-        <>
-          {isMobile && <TaskMobile />}
-          {isTablet && <TaskTablet />}
-          {isPC && <TaskPC />}
-        </>
-      )}
+      {isMobile && <TaskMobile />}
+      {isTablet && <TaskTablet />}
+      {isPC && <TaskPC />}
     </>
   );
 };

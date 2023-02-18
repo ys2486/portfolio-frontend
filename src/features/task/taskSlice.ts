@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../app/store';
 import { taskState } from '../types/taskState';
+import Cookies from 'js-cookie';
 
 //タスクAPIURL
 const apiUrl = process.env.REACT_APP_TASK_API_URL;
@@ -36,28 +37,30 @@ const initialState: taskState = {
 };
 
 //タスク全取得
-export const fetchAsyncTasksGet = createAsyncThunk('task/get', async () => {
-  const loginUserId = localStorage.loginUserId;
-  const token = localStorage.localJWT;
-  try {
-    const res = await axios.get(`${apiUrl}/get`, {
-      headers: {
-        'X-AUTH-TOKEN': `Bearer ${token}`,
-      },
-      params: { createdUser: loginUserId },
-    });
-    return res;
-  } catch (e: any) {
-    return e;
+export const fetchAsyncTasksGet = createAsyncThunk(
+  'task/get',
+  async (loginUserId: string) => {
+    try {
+      const token = Cookies.get('access_token');
+      const res = await axios.get(`${apiUrl}/get`, {
+        headers: {
+          'X-AUTH-TOKEN': `Bearer ${token}`,
+        },
+        params: { createdUser: loginUserId },
+      });
+      return res;
+    } catch (e: any) {
+      return e;
+    }
   }
-});
+);
 
 //タスク登録
 export const fetchAsyncTaskInsert = createAsyncThunk(
   'task/insert',
   async (insertTask: taskState['editedTask']) => {
-    const token = localStorage.localJWT;
     try {
+      const token = Cookies.get('access_token');
       const res = await axios.post(
         `${apiUrl}/post`,
         { name: insertTask.name, createdUser: insertTask.createdUser },
@@ -79,8 +82,8 @@ export const fetchAsyncTaskInsert = createAsyncThunk(
 export const fetchAsyncTaskDelete = createAsyncThunk(
   'task/delete',
   async (taskId: number) => {
-    const token = localStorage.localJWT;
     try {
+      const token = Cookies.get('access_token');
       const res = await axios.delete(`${apiUrl}/delete`, {
         headers: {
           'X-AUTH-TOKEN': `Bearer ${token}`,
@@ -98,8 +101,8 @@ export const fetchAsyncTaskDelete = createAsyncThunk(
 export const fetchAsyncTaskUpdate = createAsyncThunk(
   'task/update',
   async (updateTask: taskState['selectedTask']) => {
-    const token = localStorage.localJWT;
     try {
+      const token = Cookies.get('access_token');
       const res = await axios.put(
         `${apiUrl}/put`,
         {
@@ -123,8 +126,8 @@ export const fetchAsyncTaskUpdate = createAsyncThunk(
 export const fetchAsyncTaskCompletedUpdate = createAsyncThunk(
   'task/updateCompleted',
   async (updateTask: taskState['selectedTask']) => {
-    const token = localStorage.localJWT;
     try {
+      const token = Cookies.get('access_token');
       const res = await axios.put(
         `${apiUrl}/put/complete`,
         {
