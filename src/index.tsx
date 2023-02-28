@@ -1,16 +1,16 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
+import { store } from './stores/store';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { HomeRoutes } from './features/router/HomeRoutes';
-import Page404 from './features/page404/Page404';
-import HeaderLayout from './features/Header/HeaderLayout';
-import LoginPageLayout from './features/login/LoginPageLayout';
-import Banner from './features/banner/Banner';
+import { HomeRoutes } from './routes/HomeRoutes';
+import Page404 from './components/page404/Page404';
+import HeaderLayout from './components/header/HeaderLayout';
+import LoginPageLayout from './features/auth/components/pages/LoginPageLayout';
+import Banner from './components/banner/Banner';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
