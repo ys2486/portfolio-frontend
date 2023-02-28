@@ -9,7 +9,7 @@ import { useIsCookiesCheck } from './useIsCookiesCheck';
 // -----------------------------------------------------------------
 // タスク削除処理
 // 　・概要　　：選択したタスクを削除する処理
-// 　・引数　　：削除したいタスクのID
+// 　・引数　　：削除したいタスクのID（useDeleteTaskの引数）
 // 　　　　　　　taskId
 // 　・戻り値　：なし
 // -----------------------------------------------------------------
@@ -25,9 +25,19 @@ export const useDeleteTask = (taskId: number) => {
       //エラーの場合処理終了
       throw new Error();
     }
+
+    //タスク削除処理
     const res = await dispatch(fetchAsyncTaskDelete(taskId));
-    //タスク削除成功時
     if (res.payload?.request?.status === 200) {
+      //タスク削除成功時
+      await dispatch(
+        editBanner({
+          bannerIsopen: true,
+          bannerType: 'warning',
+          bannerMessage: `タスクを削除しました。`,
+        })
+      );
+      //タスク再取得
       await getTask();
     } else {
       //タスク削除エラー時

@@ -5,7 +5,7 @@ import { AppDispatch } from '../../app/store';
 import { useCreateTask } from '../hooks/useCreateTask';
 import { taskState } from '../types/taskState';
 import styles from './TaskInput.module.css';
-import { editTask, selectEditedTask } from './taskSlice';
+import { editEditedTask, selectEditedTask } from './taskSlice';
 
 const TaskInput: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -29,7 +29,7 @@ const TaskInput: React.FC = () => {
         className={styles.taskInput}
         value={editedTask.name}
         onChange={(e) =>
-          dispatch(editTask({ ...editedTask, name: e.target.value }))
+          dispatch(editEditedTask({ ...editedTask, name: e.target.value }))
         }
         placeholder="タスクを入力してください"
         onKeyPress={pressEnter}
@@ -41,6 +41,7 @@ const TaskInput: React.FC = () => {
           onClick={createTask}
           disabled={isDisabled}
           fullWidth
+          className={styles.createButton}
         >
           CREATE
         </Button>

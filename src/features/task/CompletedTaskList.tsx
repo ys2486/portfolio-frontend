@@ -13,9 +13,7 @@ const CompletedTaskList: React.FC = () => {
 
   return (
     <div>
-      <h1 style={{ margin: 0, fontFamily: "'Comic Neue', cursive" }}>
-        完了タスク一覧
-      </h1>
+      <h1 style={{ margin: 0 }}>完了タスク一覧</h1>
       {completedTasks.map((completeTask) => (
         <TaskItem key={completeTask.id} task={completeTask} />
       ))}

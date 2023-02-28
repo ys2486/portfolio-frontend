@@ -4,14 +4,19 @@ import TaskPC from './TaskPC';
 import TaskMobile from './TaskMobile';
 import TaskTablet from './TaskTablet';
 import { useGetTask } from '../hooks/useGetTask';
+import { AppDispatch } from '../../app/store';
+import { useDispatch } from 'react-redux';
+import { editEditedTask } from './taskSlice';
 
 const Task: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
   const { getTask } = useGetTask();
 
-  //初期処理
+  //タスク画面初期処理
   useEffect(() => {
+    dispatch(editEditedTask({ id: 0, name: '' }));
     getTask();
-  }, [getTask]);
+  }, [getTask, dispatch]);
 
   //レスポンシブ定義
   const mediaQueries = {

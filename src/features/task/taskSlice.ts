@@ -9,14 +9,14 @@ const apiUrl = process.env.REACT_APP_TASK_API_URL;
 
 const initialState: taskState = {
   tasks: [
-    {
-      id: 0,
-      name: '',
-      completed: false,
-      createdAt: '',
-      updatedAt: '',
-      createdUser: '',
-    },
+    // {
+    //   id: 0,
+    //   name: '',
+    //   completed: false,
+    //   createdAt: '',
+    //   updatedAt: '',
+    //   createdUser: 0,
+    // },
   ],
   editedTask: {
     id: 0,
@@ -24,7 +24,7 @@ const initialState: taskState = {
     completed: false,
     createdAt: '',
     updatedAt: '',
-    createdUser: '',
+    createdUser: 0,
   },
   selectedTask: {
     id: 0,
@@ -32,21 +32,21 @@ const initialState: taskState = {
     completed: false,
     createdAt: '',
     updatedAt: '',
-    createdUser: '',
+    createdUser: 0,
   },
 };
 
 //タスク全取得
 export const fetchAsyncTasksGet = createAsyncThunk(
   'task/get',
-  async (loginUserId: string) => {
+  async (loginUserId: number) => {
     try {
       const token = Cookies.get('access_token');
       const res = await axios.get(`${apiUrl}/get`, {
         headers: {
           'X-AUTH-TOKEN': `Bearer ${token}`,
         },
-        params: { createdUser: loginUserId },
+        params: { createdUserId: loginUserId },
       });
       return res;
     } catch (e: any) {
@@ -151,11 +151,14 @@ const taskSlice = createSlice({
   name: 'task',
   initialState: initialState,
   reducers: {
-    editTask(state, action) {
+    editEditedTask(state, action) {
       state.editedTask = action.payload;
     },
-    selectTask(state, action) {
+    editSelectTask(state, action) {
       state.selectedTask = action.payload;
+    },
+    editTasks(state, action) {
+      state.tasks = action.payload;
     },
   },
   //タスク全取得の後処理
@@ -171,13 +174,13 @@ const taskSlice = createSlice({
         completed: false,
         createdAt: '',
         updatedAt: '',
-        createdUser: '',
+        createdUser: 0,
       };
     });
   },
 });
 
-export const { editTask, selectTask } = taskSlice.actions;
+export const { editEditedTask, editSelectTask, editTasks } = taskSlice.actions;
 
 export const selectTasks = (state: RootState) => state.task.tasks;
 export const selectEditedTask = (state: RootState) => state.task.editedTask;

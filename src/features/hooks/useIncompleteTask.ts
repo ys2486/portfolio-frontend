@@ -10,7 +10,7 @@ import { useIsCookiesCheck } from './useIsCookiesCheck';
 // -----------------------------------------------------------------
 // タスク未完了処理
 // 　・概要　：完了タスクの「戻す」ボタンをクリックした場合、そのタスクの完了フラグを「未完了」に戻す処理
-// 　・引数　：未完了に戻したいタスク情報
+// 　・引数　：未完了に戻したいタスク情報（useIncompleteTaskの引数）
 // 　　　　　　updateTask:{
 // 　　　　　　　　id: number;
 // 　　　　　　　　name: string;
@@ -37,9 +37,16 @@ export const useIncompleteTask = (updateTask: taskState['selectedTask']) => {
     const res = await dispatch(
       fetchAsyncTaskCompletedUpdate({ ...updateTask, completed: false })
     );
-    //タスク未完了成功時
     if (res.payload?.request?.status === 200) {
-      // await dispatch(fetchAsyncTasksGet());
+      //タスク未完了成功時
+      await dispatch(
+        editBanner({
+          bannerIsopen: true,
+          bannerType: 'success',
+          bannerMessage: `タスクを未完了に戻しました。`,
+        })
+      );
+      //タスク再取得
       await getTask();
     } else {
       //タスク未完了エラー時

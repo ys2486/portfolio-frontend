@@ -1,9 +1,19 @@
 export type LoginState = {
   authen: {
-    userId: string;
+    mailAddress: string;
     password: string;
   };
-  loginUserId: string;
+  registerInfo: {
+    mailAddress: string;
+    userName: string;
+    password: string;
+    passwordConfirm: string;
+  };
+  loginUserInfo: {
+    loginUserId: number;
+    loginUserMailAddress: string;
+    loginUserName: string;
+  };
   isLoginView: boolean;
   isLogin: boolean;
 };

@@ -2,23 +2,27 @@ import React from 'react';
 import Modal from 'react-modal';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { Grid, TextField, Typography } from '@material-ui/core';
+import { Grid, TextField } from '@material-ui/core';
 import { taskState } from '../types/taskState';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedTask, selectTask } from './taskSlice';
+import { selectSelectedTask, editSelectTask } from './taskSlice';
 import { AppDispatch } from '../../app/store';
 import { useUpdateTask } from '../hooks/useUpdateTask';
+import styles from './TaskEditModal.module.css';
 
 //モーダルのスタイル
 const customStyles = {
+  overlay: {
+    overflow: 'auto',
+  },
   content: {
-    top: '20%',
+    top: '10%',
     left: '50%',
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    minWidth: '40%',
+    transform: 'translate(-50%, 0)',
+    minWidth: '50%',
   },
 };
 
@@ -51,13 +55,15 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
     >
       <Stack spacing={2}>
         <TextField
+          className={styles.textArea}
           variant="outlined"
           label="タスク"
           fullWidth
+          multiline
           value={selectedTask.name}
           onChange={(e) =>
             dispatch(
-              selectTask({
+              editSelectTask({
                 ...selectedTask,
                 id: selectedTask.id,
                 name: e.target.value,
@@ -66,14 +72,20 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
           }
         />
         {formatCreatedAt && (
-          <Typography variant="h6">登録日時：{formatCreatedAt}</Typography>
+          <p className={styles.dateTime}>登録日時：{formatCreatedAt}</p>
         )}
         {formatUpdatedAt && (
-          <Typography variant="h6">更新日時：{formatUpdatedAt}</Typography>
+          <p className={styles.dateTime}>更新日時：{formatUpdatedAt}</p>
         )}
         <Grid container justifyContent="center">
           <Grid item xs={3}>
-            <Button variant="contained" fullWidth onClick={updateTask}>
+            <Button
+              color="primary"
+              variant="contained"
+              fullWidth
+              onClick={updateTask}
+              className={styles.updateButton}
+            >
               UPDATE
             </Button>
           </Grid>

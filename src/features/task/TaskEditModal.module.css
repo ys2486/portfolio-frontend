@@ -1,0 +1,22 @@
+.dateTime {
+  font-size: 18px;
+}
+textarea {
+  font-size: 15px !important;
+}
+.ReactModal__Overlay {
+  overflow: auto;
+}
+
+/* スマホ用CSS */
+@media screen and (max-width: 519px) {
+  .dateTime {
+    font-size: 15px;
+  }
+  textarea {
+    font-size: 10px !important;
+  }
+  .updateButton {
+    font-size: 10px !important;
+  }
+}

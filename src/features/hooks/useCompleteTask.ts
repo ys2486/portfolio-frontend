@@ -10,7 +10,7 @@ import { useIsCookiesCheck } from './useIsCookiesCheck';
 // -----------------------------------------------------------------
 // タスク完了処理
 // 　・概要　：未完了タスクの「完了」ボタンをクリックした場合、そのタスクの完了フラグを「完了」とする処理
-// 　・引数　：完了させたいタスク情報
+// 　・引数　：完了させたいタスク情報(useCompleteTaskの引数)
 // 　　　　　　updateTask:{
 // 　　　　　　　　id: number;
 // 　　　　　　　　name: string;
@@ -33,12 +33,20 @@ export const useCompleteTask = (updateTask: taskState['selectedTask']) => {
       //エラーの場合処理終了
       throw new Error();
     }
+
     //タスク完了処理
     const res = await dispatch(
       fetchAsyncTaskCompletedUpdate({ ...updateTask, completed: true })
     );
     if (res.payload?.request?.status === 200) {
       //タスク完了成功時、タスク再取得
+      await dispatch(
+        editBanner({
+          bannerIsopen: true,
+          bannerType: 'success',
+          bannerMessage: `タスク完了しました。`,
+        })
+      );
       await getTask();
     } else {
       //タスク完了エラー時

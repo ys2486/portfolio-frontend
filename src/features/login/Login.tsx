@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../app/store';
 import {
+  editmailAddress,
   editPassword,
-  editUserId,
   selectAuthen,
   toggleMode,
 } from './loginSlice';
@@ -12,6 +12,7 @@ import { Button } from '@material-ui/core';
 import { useLogin } from '../hooks/useLogin';
 import { useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 //バリデーション用タイプ
 type Inputs = {
@@ -24,15 +25,16 @@ const Login: React.FC = () => {
   const authen = useSelector(selectAuthen);
   const [isValid, setIsValid] = useState<boolean>(false);
   const btnDisabled: boolean =
-    isValid || authen.userId === '' || authen.password === '';
+    isValid || authen.mailAddress === '' || authen.password === '';
   const { login } = useLogin();
+  const [isRevealPassword, setIsRevealPassword] = useState<boolean>(false);
 
   //バリデーション用
   const {
     register,
     formState: { errors },
   } = useForm<Inputs>({
-    mode: 'onChange',
+    mode: 'all',
     criteriaMode: 'all',
   });
 
@@ -49,40 +51,49 @@ const Login: React.FC = () => {
   const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (!btnDisabled) {
-        login();
+        login(0);
       }
     }
+  };
+
+  //パスワード表示切り替え用
+  const togglePassword = () => {
+    setIsRevealPassword((prevState) => !prevState);
   };
 
   return (
     <div className={styles.containerLogin}>
       <div className={styles.appLogin}>
         <h1>Login</h1>
-        <p className={styles.subjectTitle}>UserId</p>
+
+        {/* メールアドレスエリア */}
+        <p className={styles.subjectTitle}>Mail Address</p>
         <input
           type="text"
           className={styles.inputLog}
-          value={authen.userId}
+          value={authen.mailAddress}
           // ユーザーIDバリデーション
           {...register('username', {
-            onChange: (e) => dispatch(editUserId(e.target.value)),
+            onChange: (e) => dispatch(editmailAddress(e.target.value)),
             required: { value: true, message: '入力が必須の項目です' },
             pattern: {
-              value: /^[0-9a-zA-Z]*$/,
-              message: '半角英数のみで入力してください',
+              value: /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/,
+              message: '半角英数記号のみで入力してください',
             },
           })}
         />
-        {/* バリデーションエラーメッセージ */}
+        {/* メールアドレス　バリデーションエラーメッセージ */}
         {errors.username?.message && (
           <p className={styles.validMessage}>
             <BsExclamationCircle />
             {errors.username.message}
           </p>
         )}
+
+        {/* パスワードエリア */}
         <p className={styles.subjectTitle}>Password</p>
         <input
-          type="password"
+          type={isRevealPassword ? 'text' : 'password'}
           className={styles.inputLog}
           onKeyPress={pressEnter}
           value={authen.password}
@@ -94,34 +105,47 @@ const Login: React.FC = () => {
               message: '入力が必須の項目です',
             },
             pattern: {
-              value: /^[0-9a-zA-Z]*$/,
-              message: '半角英数のみで入力してください',
+              value: /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/,
+              message: '半角英数記号のみで入力してください',
             },
           })}
         />
-        {/* バリデーションエラーメッセージ */}
+        <span
+          onClick={togglePassword}
+          role="presentation"
+          className={styles.passwordEyeIcon}
+        >
+          {isRevealPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+        </span>
+        {/* パスワード　バリデーションエラーメッセージ */}
         {errors.password?.message && (
           <div className={styles.validMessage}>
             <BsExclamationCircle />
             {errors.password.message}
           </div>
         )}
+
+        {/* ログインボタンエリア */}
         <div className={styles.switch}>
           <Button
             variant="contained"
             disabled={btnDisabled}
             color="primary"
-            onClick={login}
+            onClick={() => login(0)}
           >
             Login
           </Button>
         </div>
-        <span
-          className={styles.switchText}
-          onClick={() => dispatch(toggleMode())}
-        >
-          Create Account?
-        </span>
+
+        {/* ユーザー登録切り替え文言エリア */}
+        <div className={styles.switchTextContainer}>
+          <span
+            className={styles.switchText}
+            onClick={() => dispatch(toggleMode())}
+          >
+            Create Account?
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ h1 {
 
 .inputLog {
   width: 90%;
-  margin: 20px;
+  margin: 20px 0px;
   font-family: 'Comic Neue', cursive;
   background-color: #555555;
   border: 0;
@@ -44,22 +44,51 @@ h1 {
   display: block;
   text-align: center;
 }
-.switchText {
-  display: block;
+.switchTextContainer {
   text-align: center;
-  cursor: pointer;
 }
+.switchText {
+  cursor: pointer;
+  position: relative;
+  padding: 0px 5px;
+}
+/* createテキストホバー時のアンダーライン */
+.switchText::after {
+  position: absolute;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 2px;
+  background: white;
+  bottom: -10px;
+  transform: scale(0, 1);
+  transform-origin: left top;
+  transition: transform 0.3s;
+}
+.switchText:hover::after {
+  transform: scale(1, 1);
+}
+/*  */
+
 .validMessage {
   text-align: center;
   color: rgb(195, 3, 3);
   font-size: 0.95rem;
   margin-top: -15px;
 }
-
+.passwordEyeIcon {
+  font-size: 1.2rem;
+}
 @media screen and (max-width: 519px) {
   /* スマホ用CSS */
   .appLogin {
     min-width: initial;
     width: 70%;
+  }
+  .inputLog {
+    font-size: 1rem;
+  }
+  .validMessage {
+    font-size: 0.8rem;
   }
 }

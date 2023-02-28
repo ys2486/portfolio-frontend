@@ -62,3 +62,14 @@
   background: #444;
   border-radius: 10px;
 }
+
+/* スマホ用CSS */
+@media screen and (max-width: 519px) {
+  .taskListContainer {
+    background-color: #292f38;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    min-height: 20vh;
+  }
+}

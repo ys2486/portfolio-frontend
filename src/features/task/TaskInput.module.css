@@ -16,3 +16,21 @@
   border-radius: 5px;
   margin-right: 10px;
 }
+
+/* スマホ用CSS */
+@media screen and (max-width: 519px) {
+  .taskInput {
+    height: 20px;
+    width: 88%;
+    font-size: 10px;
+  }
+  .taskButton .createButton {
+    min-width: 0;
+  }
+  .createButton span {
+    font-size: 8px;
+  }
+  .taskButton {
+    width: 12%;
+  }
+}

@@ -8,10 +8,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Avatar, Badge, Grid } from '@material-ui/core';
 import { styled } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { useSelector } from 'react-redux';
-import { selectLoginUserId } from '../login/loginSlice';
+import { selectLoginUserInfo } from '../login/loginSlice';
+import { useLogout } from '../hooks/useLogout';
 
 //ユーザーアイコン右下の緑色マークのスタイル
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -45,8 +44,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const Header: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const navigate = useNavigate();
-  const loginuseId = useSelector(selectLoginUserId);
+  const loginuseInfo = useSelector(selectLoginUserInfo);
+  const { logout } = useLogout();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -56,28 +55,24 @@ const Header: React.FC = () => {
     setAnchorEl(null);
   };
 
-  //ログアウト時の処理
-  const logout = () => {
-    setAnchorEl(null);
-    Cookies.remove('login_user');
-    Cookies.remove('access_token');
-    navigate('/');
-  };
-
   return (
     <AppBar position="static" className={styles.barStyle}>
       <Toolbar>
         {/* Todo List文言エリア */}
         <Grid container alignItems="center">
-          <Grid item sm={11} xs={10}>
+          <Grid item sm={1} xs={2}></Grid>
+          <Grid item sm={10} xs={8}>
+            {/* <Grid item sm={11} xs={10}> */}
             <Typography
               variant="h6"
               align="center"
               style={{ fontFamily: "'Comic Neue', cursive" }}
+              className={styles.HeaderMessage}
             >
               Todo List
             </Typography>
           </Grid>
+
           {/* ユーザーアイコンエリア */}
           <Grid item sm={1} xs={2}>
             <IconButton
@@ -93,9 +88,15 @@ const Header: React.FC = () => {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 variant="dot"
               >
-                <Avatar alt={loginuseId} src="*" />
+                <Avatar
+                  alt={loginuseInfo.loginUserName}
+                  src="*"
+                  className={styles.userIcon}
+                />
               </StyledBadge>
             </IconButton>
+
+            {/* ユーザーアイコンクリック時のメニュー */}
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
@@ -111,8 +112,13 @@ const Header: React.FC = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <p className={styles.loginUserName}>{loginuseId}</p>
-              <MenuItem onClick={logout} className={styles.menuItem}>
+              <p className={styles.loginUserName}>
+                {loginuseInfo.loginUserName}
+              </p>
+              <MenuItem
+                onClick={() => logout(setAnchorEl)}
+                className={styles.menuItem}
+              >
                 Logout
               </MenuItem>
             </Menu>

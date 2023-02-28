@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../../app/store';
 import { editBanner } from '../banner/bannerSlice';
-import { editIsLogin, selectLoginUserId } from '../login/loginSlice';
+import { editIsLogin, selectLoginUserInfo } from '../login/loginSlice';
 import { fetchAsyncTasksGet } from '../task/taskSlice';
 import { useIsCookiesCheck } from './useIsCookiesCheck';
 
@@ -16,7 +16,7 @@ import { useIsCookiesCheck } from './useIsCookiesCheck';
 export const useGetTask = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const loginuseId = useSelector(selectLoginUserId);
+  const { loginUserId } = useSelector(selectLoginUserInfo);
   const { isCookiesCheck } = useIsCookiesCheck();
 
   const getTask = useCallback(async () => {
@@ -27,17 +27,17 @@ export const useGetTask = () => {
     }
 
     //ユーザーに紐づく全タスク取得処理
-    const res = await dispatch(fetchAsyncTasksGet(loginuseId));
-
+    const res = await dispatch(fetchAsyncTasksGet(loginUserId));
     if (res.payload?.request?.status) {
-      //API結果
+      //タスク取得結果が存在する場合
       const tasksGetResult: number = res.payload.request.status;
       if (tasksGetResult === 200) {
+        //タスク取得成功時
         //タスク画面を表示する
         await dispatch(editIsLogin(true));
       } else {
-        //APIでエラーが発生しタスクの取得に失敗した場合
-        navigate('/');
+        //タスクの取得エラー時
+        await navigate('/');
         await dispatch(
           editBanner({
             bannerIsopen: true,
@@ -47,8 +47,8 @@ export const useGetTask = () => {
         );
       }
     } else {
-      //API以外のエラー時
-      navigate('/');
+      //API以外のエラー等で、タスク取得結果すら存在しない場合
+      await navigate('/');
       await dispatch(
         editBanner({
           bannerIsopen: true,
@@ -57,6 +57,6 @@ export const useGetTask = () => {
         })
       );
     }
-  }, [dispatch, navigate, loginuseId, isCookiesCheck]);
+  }, [dispatch, navigate, isCookiesCheck, loginUserId]);
   return { getTask };
 };

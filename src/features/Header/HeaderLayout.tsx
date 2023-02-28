@@ -14,6 +14,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = (props) => {
   const isLogin = useSelector(selectIsLogin);
   const { isLoginCheck } = useIsLoginCheck();
 
+  //初期表示時にログイン済みチェック
   useEffect(() => {
     isLoginCheck();
   }, [isLoginCheck]);

@@ -4,9 +4,10 @@ import { AppDispatch } from '../../app/store';
 import { editBanner } from '../banner/bannerSlice';
 import {
   editPassword,
-  editUserId,
+  editmailAddress,
   fetchAsyncRegister,
-  selectAuthen,
+  toggleMode,
+  selectRegisterInfo,
 } from '../login/loginSlice';
 import { useLogin } from './useLogin';
 
@@ -18,35 +19,36 @@ import { useLogin } from './useLogin';
 // -----------------------------------------------------------------
 export const useRegisterUser = () => {
   const dispatch: AppDispatch = useDispatch();
-  const authen = useSelector(selectAuthen);
+  // const authen = useSelector(selectAuthen);
+  const registerInfo = useSelector(selectRegisterInfo);
   const { login } = useLogin();
 
-  //ユーザー登録処理
   const registerUser = useCallback(async () => {
-    const res = await fetchAsyncRegister(authen);
-    //ユーザー登録結果
+    //ユーザー登録処理
+    const res = await fetchAsyncRegister(registerInfo);
     const registerResult: number = res.request?.status;
 
     if (registerResult === 200) {
-      //①ユーザー登録正常時
-      //作成したユーザーでログイン
-      login();
+      //ユーザー登録正常時
+      //作成したユーザーでログイン（ユーザー登録時の流れでログインする場合は「1」を引数にセットする）
+      await login(1);
+      //ユーザー登録モードからログインモードに戻す
+      await dispatch(toggleMode());
     } else if (registerResult === 500) {
-      //②既にそのユーザーIDが登録されている場合
-      //バナー表示
+      //既にそのユーザーIDが登録されている場合
       dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `「${authen.userId}」は既に使用されているUserIdとなります。
+          bannerMessage: `「${registerInfo.mailAddress}」は既に使用されているメールアドレスとなります。
           別のUserIdを使用してください。`,
         })
       );
       //UserIdとPasswordの初期化
-      dispatch(editUserId(''));
+      dispatch(editmailAddress(''));
       dispatch(editPassword(''));
     } else {
-      //③その他エラー
+      //その他エラー
       dispatch(
         editBanner({
           bannerIsopen: true,
@@ -55,10 +57,10 @@ export const useRegisterUser = () => {
         })
       );
       //UserIdとPasswordの初期化
-      dispatch(editUserId(''));
+      dispatch(editmailAddress(''));
       dispatch(editPassword(''));
     }
-  }, [authen, dispatch, login]);
+  }, [registerInfo, dispatch, login]);
 
   //カスタムフックから返却
   return { registerUser };

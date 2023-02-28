@@ -23,7 +23,6 @@ export const useUpdateTask = (
   const { getTask } = useGetTask();
   const { isCookiesCheck } = useIsCookiesCheck();
 
-  //タスク変更処理
   const updateTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
     const checkResult = await isCookiesCheck();
@@ -31,13 +30,22 @@ export const useUpdateTask = (
       //エラーの場合処理終了
       throw new Error();
     }
+
     //タスク変更処理
     const res = await dispatch(fetchAsyncTaskUpdate(selectedTask));
     //タスク変更成功時
     if (res.payload?.request?.status === 200) {
+      //タスク再取得
       await getTask();
       //編集用モーダルを閉じる
       await setEditModalIsOpen(false);
+      await dispatch(
+        editBanner({
+          bannerIsopen: true,
+          bannerType: 'success',
+          bannerMessage: `タスク修正しました。`,
+        })
+      );
     } else {
       //タスク更新エラー時
       await dispatch(
