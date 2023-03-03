@@ -44,7 +44,10 @@
     "taskTextFieldLabel": "タスク",
     "createdAt": "登録日時：",
     "updatedAt": "更新日時：",
-    "updateButton": "更新"
+    "updateButton": "更新",
+    "deleteButton": "削除",
+    "completeButton": "完了",
+    "incompleteButton": "未完了"
   },
   "Banner": {
     "loginWelcomeTop": "ようこそ、",

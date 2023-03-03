@@ -10,6 +10,10 @@ import { AppDispatch } from '../../../../stores/store';
 import { useUpdateTask } from '../../hooks/useUpdateTask';
 import styles from './TaskEditModal.module.css';
 import { useTranslation } from 'react-i18next';
+import { BsCheckCircleFill, BsTrash } from 'react-icons/bs';
+import { FaEdit } from 'react-icons/fa';
+import { useCompleteTask } from '../../hooks/useCompleteTask';
+import { useDeleteTask } from '../../hooks/useDeleteTask';
 
 //モーダルのスタイル
 const customStyles = {
@@ -47,8 +51,23 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
   const selectedTask: taskState['selectedTask'] =
     useSelector(selectSelectedTask);
   const { updateTask } = useUpdateTask(setEditModalIsOpen);
+  const { completeTask } = useCompleteTask(selectedTask);
+  const { deleteTask } = useDeleteTask(selectedTask.id);
+
   //多言語対応用
   const { t } = useTranslation();
+
+  //完了ボタンクリック時
+  const completeButtonClicked = async () => {
+    await completeTask();
+    await setEditModalIsOpen(false);
+  };
+
+  //削除ボタンクリック時
+  const deleteButtonClicked = async () => {
+    await deleteTask();
+    await setEditModalIsOpen(false);
+  };
 
   return (
     <Modal
@@ -86,16 +105,46 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
             {formatUpdatedAt}
           </p>
         )}
-        <Grid container justifyContent="center">
-          <Grid item xs={3}>
+        <Grid container justifyContent="space-around">
+          {/* 更新ボタン */}
+          <Grid item xs={5}>
             <Button
               color="primary"
               variant="contained"
               fullWidth
               onClick={updateTask}
-              className={styles.updateButton}
+              className={styles.modalButton}
+              startIcon={<FaEdit />}
             >
               {t('TaskEditModal.updateButton')}
+            </Button>
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="space-around">
+          {/* 完了ボタン */}
+          <Grid item xs={5}>
+            <Button
+              color="success"
+              variant="contained"
+              fullWidth
+              onClick={completeButtonClicked}
+              className={styles.modalButton}
+              startIcon={<BsCheckCircleFill />}
+            >
+              {t('TaskEditModal.completeButton')}
+            </Button>
+          </Grid>
+          {/* 削除ボタン */}
+          <Grid item xs={5}>
+            <Button
+              color="error"
+              variant="contained"
+              fullWidth
+              onClick={deleteButtonClicked}
+              className={styles.modalButton}
+              startIcon={<BsTrash />}
+            >
+              {t('TaskEditModal.deleteButton')}
             </Button>
           </Grid>
         </Grid>

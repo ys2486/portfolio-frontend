@@ -29,12 +29,12 @@ const TaskInput: React.FC = () => {
     <div className={styles.taskInputContainer}>
       <input
         type="text"
+        enterKeyHint="send"
         className={styles.taskInput}
         value={editedTask.name}
         onChange={(e) =>
           dispatch(editEditedTask({ ...editedTask, name: e.target.value }))
         }
-        // placeholder="タスクを入力してください"
         placeholder={t('taskInput.inputPlaceholder') || ''}
         onKeyPress={pressEnter}
       />

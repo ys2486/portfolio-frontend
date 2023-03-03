@@ -44,7 +44,10 @@
     "taskTextFieldLabel": "Task",
     "createdAt": "Created at：",
     "updatedAt": "Updated at：",
-    "updateButton": "UPDATE"
+    "updateButton": "UPDATE",
+    "deleteButton": "DELETE",
+    "completeButton": "COMPLETE",
+    "incompleteButton": "INCOMPLETE"
   },
   "Banner": {
     "loginWelcomeTop": "Welcome ",
