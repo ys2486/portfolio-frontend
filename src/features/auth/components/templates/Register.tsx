@@ -15,6 +15,8 @@ import {
 import styles from './Register.module.css';
 import { BsExclamationCircle } from 'react-icons/bs';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import i18n from '../../../../i18n/configs';
+import { useTranslation } from 'react-i18next';
 
 //バリデーション用タイプ
 type Inputs = {
@@ -36,6 +38,8 @@ const Register: React.FC = () => {
     registerInfo.passwordConfirm === '';
   const { registerUser } = useRegisterUser();
   const [isRevealPassword, setIsRevealPassword] = useState<boolean>(false);
+  //多言語対応用
+  const { t } = useTranslation();
 
   //バリデーション用
   const {
@@ -77,10 +81,10 @@ const Register: React.FC = () => {
     <>
       <div className={styles.containerRegister}>
         <div className={styles.register}>
-          <h1>Register</h1>
+          <h1>{t('register.RegisterTopMessage')}</h1>
 
           {/* メールアドレスエリア*/}
-          <p className={styles.subjectTitle}>Mail Address</p>
+          <p className={styles.subjectTitle}>{t('register.mailAddress')}</p>
           <input
             type="text"
             className={styles.inputLog}
@@ -89,10 +93,13 @@ const Register: React.FC = () => {
             {...register('registerMailAddress', {
               onChange: (e) =>
                 dispatch(editRegisterMailAddress(e.target.value)),
-              required: { value: true, message: '入力が必須の項目です' },
+              required: {
+                value: true,
+                message: t('validation.validationRequiredMessage'),
+              },
               pattern: {
                 value: /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/,
-                message: '半角英数記号のみで入力してください',
+                message: t('validation.validationPatternMessage'),
               },
             })}
           />
@@ -105,7 +112,7 @@ const Register: React.FC = () => {
           )}
 
           {/* ユーザー名*/}
-          <p className={styles.subjectTitle}>User Name</p>
+          <p className={styles.subjectTitle}>{t('register.userName')}</p>
           <input
             type="text"
             className={styles.inputLog}
@@ -113,7 +120,10 @@ const Register: React.FC = () => {
             // ユーザーIDバリデーション
             {...register('registerUserName', {
               onChange: (e) => dispatch(editRegisterUserName(e.target.value)),
-              required: { value: true, message: '入力が必須の項目です' },
+              required: {
+                value: true,
+                message: t('validation.validationRequiredMessage'),
+              },
             })}
           />
           {/* ユーザー名　バリデーションエラーメッセージ */}
@@ -125,7 +135,7 @@ const Register: React.FC = () => {
           )}
 
           {/* パスワードエリア */}
-          <p className={styles.subjectTitle}>Password</p>
+          <p className={styles.subjectTitle}>{t('register.password')}</p>
           <input
             type={isRevealPassword ? 'text' : 'password'}
             className={styles.inputLog}
@@ -135,11 +145,11 @@ const Register: React.FC = () => {
               onChange: (e) => dispatch(editRegisterPassword(e.target.value)),
               required: {
                 value: true,
-                message: '入力が必須の項目です',
+                message: t('validation.validationRequiredMessage'),
               },
               pattern: {
                 value: /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/,
-                message: '半角英数記号のみで入力してください',
+                message: t('validation.validationPatternMessage'),
               },
             })}
           />
@@ -159,7 +169,7 @@ const Register: React.FC = () => {
           )}
 
           {/* パスワード再入力エリア */}
-          <p className={styles.subjectTitle}>Re-Enter Password</p>
+          <p className={styles.subjectTitle}>{t('register.reEnterpassword')}</p>
           <input
             type={isRevealPassword ? 'text' : 'password'}
             className={styles.inputLog}
@@ -168,16 +178,16 @@ const Register: React.FC = () => {
               // パスワード項目との一致チェック
               validate: (value) =>
                 value === getValues('registerPassword') ||
-                'パスワードが一致しません',
+                t('validation.validationPWUnmatchMessage').toString(),
               onChange: (e) =>
                 dispatch(editRegisterPasswordConfirm(e.target.value)),
               required: {
                 value: true,
-                message: '入力が必須の項目です',
+                message: t('validation.validationRequiredMessage'),
               },
               pattern: {
                 value: /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/,
-                message: '半角英数記号のみで入力してください',
+                message: t('validation.validationPatternMessage'),
               },
             })}
           />
@@ -204,7 +214,7 @@ const Register: React.FC = () => {
               color="primary"
               onClick={registerUser}
             >
-              Register
+              {t('register.registerButton')}
             </Button>
           </div>
 
@@ -214,7 +224,24 @@ const Register: React.FC = () => {
               className={styles.switchText}
               onClick={() => dispatch(toggleMode())}
             >
-              Do you have already account?
+              {t('register.changeLoginMode')}
+            </span>
+          </div>
+
+          {/* 言語切替テキスト */}
+          <div className={styles.languageChangeContainer}>
+            <span
+              className={styles.switchText}
+              onClick={() => i18n.changeLanguage('en')}
+            >
+              {t('login.english')}
+            </span>
+            <span>/</span>
+            <span
+              className={styles.switchText}
+              onClick={() => i18n.changeLanguage('ja')}
+            >
+              {t('login.japanese')}
             </span>
           </div>
         </div>

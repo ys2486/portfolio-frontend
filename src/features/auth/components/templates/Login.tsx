@@ -13,6 +13,8 @@ import { useLogin } from '../../hooks/useLogin';
 import { useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import i18n from '../../../../i18n/configs';
+import { useTranslation } from 'react-i18next';
 
 //バリデーション用タイプ
 type Inputs = {
@@ -28,6 +30,8 @@ const Login: React.FC = () => {
     isValid || authen.mailAddress === '' || authen.password === '';
   const { login } = useLogin();
   const [isRevealPassword, setIsRevealPassword] = useState<boolean>(false);
+  //多言語対応用
+  const { t } = useTranslation();
 
   //バリデーション用
   const {
@@ -64,10 +68,10 @@ const Login: React.FC = () => {
   return (
     <div className={styles.containerLogin}>
       <div className={styles.appLogin}>
-        <h1>Login</h1>
+        <h1>{t('login.loginTopMessage')}</h1>
 
         {/* メールアドレスエリア */}
-        <p className={styles.subjectTitle}>Mail Address</p>
+        <p className={styles.subjectTitle}>{t('login.mailAddress')}</p>
         <input
           type="text"
           className={styles.inputLog}
@@ -75,10 +79,13 @@ const Login: React.FC = () => {
           // ユーザーIDバリデーション
           {...register('username', {
             onChange: (e) => dispatch(editmailAddress(e.target.value)),
-            required: { value: true, message: '入力が必須の項目です' },
+            required: {
+              value: true,
+              message: t('validation.validationRequiredMessage'),
+            },
             pattern: {
               value: /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/,
-              message: '半角英数記号のみで入力してください',
+              message: t('validation.validationPatternMessage'),
             },
           })}
         />
@@ -91,7 +98,7 @@ const Login: React.FC = () => {
         )}
 
         {/* パスワードエリア */}
-        <p className={styles.subjectTitle}>Password</p>
+        <p className={styles.subjectTitle}>{t('login.password')}</p>
         <input
           type={isRevealPassword ? 'text' : 'password'}
           className={styles.inputLog}
@@ -102,11 +109,11 @@ const Login: React.FC = () => {
             onChange: (e) => dispatch(editPassword(e.target.value)),
             required: {
               value: true,
-              message: '入力が必須の項目です',
+              message: t('validation.validationRequiredMessage'),
             },
             pattern: {
               value: /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/,
-              message: '半角英数記号のみで入力してください',
+              message: t('validation.validationPatternMessage'),
             },
           })}
         />
@@ -133,7 +140,7 @@ const Login: React.FC = () => {
             color="primary"
             onClick={() => login(0)}
           >
-            Login
+            {t('login.loginButton')}
           </Button>
         </div>
 
@@ -143,7 +150,24 @@ const Login: React.FC = () => {
             className={styles.switchText}
             onClick={() => dispatch(toggleMode())}
           >
-            Create Account?
+            {t('login.changeRegisterMode')}
+          </span>
+        </div>
+
+        {/* 言語切替テキスト */}
+        <div className={styles.languageChangeContainer}>
+          <span
+            className={styles.switchText}
+            onClick={() => i18n.changeLanguage('en')}
+          >
+            {t('login.english')}
+          </span>
+          <span>/</span>
+          <span
+            className={styles.switchText}
+            onClick={() => i18n.changeLanguage('ja')}
+          >
+            {t('login.japanese')}
           </span>
         </div>
       </div>

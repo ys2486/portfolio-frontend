@@ -6,12 +6,15 @@ import { useCreateTask } from '../../hooks/useCreateTask';
 import { taskState } from '../../types/taskState';
 import styles from './TaskInput.module.css';
 import { editEditedTask, selectEditedTask } from '../../slice/taskSlice';
+import { useTranslation } from 'react-i18next';
 
 const TaskInput: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const editedTask: taskState['editedTask'] = useSelector(selectEditedTask);
   const isDisabled = editedTask.name.length === 0;
   const { createTask } = useCreateTask();
+  //多言語対応用
+  const { t } = useTranslation();
 
   //パスワード入力時にエンターキークリックでタスク登録処理
   const pressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -31,10 +34,11 @@ const TaskInput: React.FC = () => {
         onChange={(e) =>
           dispatch(editEditedTask({ ...editedTask, name: e.target.value }))
         }
-        placeholder="タスクを入力してください"
+        // placeholder="タスクを入力してください"
+        placeholder={t('taskInput.inputPlaceholder') || ''}
         onKeyPress={pressEnter}
       />
-      <div className={styles.taskButton}>
+      <div className={styles.buttonArea}>
         <Button
           variant="contained"
           color="primary"
@@ -43,7 +47,7 @@ const TaskInput: React.FC = () => {
           fullWidth
           className={styles.createButton}
         >
-          CREATE
+          {t('taskInput.taskCreateButton')}
         </Button>
       </div>
     </div>

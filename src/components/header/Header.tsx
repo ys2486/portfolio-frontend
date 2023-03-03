@@ -4,13 +4,14 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Avatar, Badge, Grid } from '@material-ui/core';
 import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { selectLoginUserInfo } from '../../features/auth/slice/loginSlice';
 import { useLogout } from '../../features/auth/hooks/useLogout';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n/configs';
 
 //ユーザーアイコン右下の緑色マークのスタイル
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -46,6 +47,8 @@ const Header: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const loginuseInfo = useSelector(selectLoginUserInfo);
   const { logout } = useLogout();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -58,18 +61,17 @@ const Header: React.FC = () => {
   return (
     <AppBar position="static" className={styles.barStyle}>
       <Toolbar>
-        {/* Todo List文言エリア */}
         <Grid container alignItems="center">
           <Grid item sm={1} xs={2}></Grid>
+          {/* Todo List文言エリア */}
           <Grid item sm={10} xs={8}>
-            {/* <Grid item sm={11} xs={10}> */}
             <Typography
               variant="h6"
               align="center"
               style={{ fontFamily: "'Comic Neue', cursive" }}
               className={styles.HeaderMessage}
             >
-              Todo List
+              {t('header.todoList')}
             </Typography>
           </Grid>
 
@@ -111,16 +113,32 @@ const Header: React.FC = () => {
               }}
               open={Boolean(anchorEl)}
               onClose={handleClose}
+              className={styles.MenuContainer}
             >
               <p className={styles.loginUserName}>
                 {loginuseInfo.loginUserName}
               </p>
-              <MenuItem
+              <p
                 onClick={() => logout(setAnchorEl)}
                 className={styles.menuItem}
               >
-                Logout
-              </MenuItem>
+                {t('header.logout')}
+              </p>
+              <p className={styles.languageTextArea}>
+                <span
+                  onClick={() => i18n.changeLanguage('en')}
+                  className={styles.switchText}
+                >
+                  {t('header.english')}
+                </span>
+                <span>/</span>
+                <span
+                  className={styles.switchText}
+                  onClick={() => i18n.changeLanguage('ja')}
+                >
+                  {t('header.japanese')}
+                </span>
+              </p>
             </Menu>
           </Grid>
         </Grid>

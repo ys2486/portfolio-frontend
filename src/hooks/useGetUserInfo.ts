@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../stores/store';
 import { editBanner } from '../components/banner/bannerSlice';
 import { fetchAsyncLoginUserInfoGet } from '../features/auth/slice/loginSlice';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // ログインユーザー情報取得処理
@@ -15,6 +16,8 @@ import { fetchAsyncLoginUserInfoGet } from '../features/auth/slice/loginSlice';
 export const useGetUserInfo = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const getUserInfo = useCallback(
     async (loginUserMailAddress: string) => {
@@ -32,12 +35,12 @@ export const useGetUserInfo = () => {
           editBanner({
             bannerIsopen: true,
             bannerType: 'error',
-            bannerMessage: `ユーザー情報の取得に失敗しました。ログインからやり直してください。`,
+            bannerMessage: t('Banner.getUserInfoError'),
           })
         );
       }
     },
-    [dispatch, navigate]
+    [dispatch, navigate, t]
   );
 
   //カスタムフックから返却

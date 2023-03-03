@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../stores/store';
 import { useDispatch } from 'react-redux';
 import { editBanner } from '../components/banner/bannerSlice';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // Cookies認証情報チェック処理
@@ -14,6 +15,8 @@ import { editBanner } from '../components/banner/bannerSlice';
 export const useIsCookiesCheck = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const isCookiesCheck = useCallback(async () => {
     //クッキーから必要な情報を取得する
@@ -34,11 +37,11 @@ export const useIsCookiesCheck = () => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `認証期限が切れました。再度ログインし直してください`,
+          bannerMessage: t('Banner.loginAgain'),
         })
       );
     }
     return false;
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, t]);
   return { isCookiesCheck };
 };

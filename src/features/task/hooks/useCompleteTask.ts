@@ -6,6 +6,7 @@ import { fetchAsyncTaskCompletedUpdate } from '../slice/taskSlice';
 import { taskState } from '../types/taskState';
 import { useGetTask } from './useGetTask';
 import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // タスク完了処理
@@ -19,12 +20,14 @@ import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
 // 　　　　　　　　updatedAt: string;
 // 　　　　　　　　createdUser: string;
 // 　　　　　　}
-// 　・戻り値：なし
+// 　・戻り値：boolean
 // -----------------------------------------------------------------
 export const useCompleteTask = (updateTask: taskState['selectedTask']) => {
   const dispatch: AppDispatch = useDispatch();
   const { getTask } = useGetTask();
   const { isCookiesCheck } = useIsCookiesCheck();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const completeTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
@@ -44,20 +47,22 @@ export const useCompleteTask = (updateTask: taskState['selectedTask']) => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'success',
-          bannerMessage: `タスク完了しました。`,
+          bannerMessage: t('Banner.completeTask'),
         })
       );
       await getTask();
+      return true;
     } else {
       //タスク完了エラー時
       await dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `タスクの完了処理に失敗しました。管理者に連絡してください。`,
+          bannerMessage: t('Banner.completeTaskError'),
         })
       );
+      return false;
     }
-  }, [dispatch, getTask, isCookiesCheck, updateTask]);
+  }, [dispatch, getTask, isCookiesCheck, updateTask, t]);
   return { completeTask };
 };

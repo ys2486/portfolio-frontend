@@ -10,6 +10,7 @@ import {
   selectRegisterInfo,
 } from '../slice/loginSlice';
 import { useLogin } from './useLogin';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // ユーザー登録処理
@@ -22,6 +23,8 @@ export const useRegisterUser = () => {
   // const authen = useSelector(selectAuthen);
   const registerInfo = useSelector(selectRegisterInfo);
   const { login } = useLogin();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const registerUser = useCallback(async () => {
     //ユーザー登録処理
@@ -40,8 +43,9 @@ export const useRegisterUser = () => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `「${registerInfo.mailAddress}」は既に使用されているメールアドレスとなります。
-          別のUserIdを使用してください。`,
+          bannerMessage: `${registerInfo.mailAddress}${t(
+            'Banner.registerAlreadyUsedError'
+          )}`,
         })
       );
       //UserIdとPasswordの初期化
@@ -53,14 +57,14 @@ export const useRegisterUser = () => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: 'エラーが発生しました。管理者に連絡してください。',
+          bannerMessage: t('Banner.systemError'),
         })
       );
       //UserIdとPasswordの初期化
       dispatch(editmailAddress(''));
       dispatch(editPassword(''));
     }
-  }, [registerInfo, dispatch, login]);
+  }, [registerInfo, dispatch, login, t]);
 
   //カスタムフックから返却
   return { registerUser };

@@ -6,6 +6,7 @@ import { fetchAsyncTaskUpdate, selectSelectedTask } from '../slice/taskSlice';
 import { taskState } from '../types/taskState';
 import { useGetTask } from './useGetTask';
 import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // タスク変更処理
@@ -22,6 +23,8 @@ export const useUpdateTask = (
     useSelector(selectSelectedTask);
   const { getTask } = useGetTask();
   const { isCookiesCheck } = useIsCookiesCheck();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const updateTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
@@ -43,7 +46,7 @@ export const useUpdateTask = (
         editBanner({
           bannerIsopen: true,
           bannerType: 'success',
-          bannerMessage: `タスク修正しました。`,
+          bannerMessage: t('Banner.updateTask'),
         })
       );
     } else {
@@ -52,10 +55,10 @@ export const useUpdateTask = (
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `タスクの更新に失敗しました。管理者に連絡してください。`,
+          bannerMessage: t('Banner.updateTaskError'),
         })
       );
     }
-  }, [dispatch, selectedTask, setEditModalIsOpen, getTask, isCookiesCheck]);
+  }, [dispatch, selectedTask, setEditModalIsOpen, getTask, isCookiesCheck, t]);
   return { updateTask };
 };

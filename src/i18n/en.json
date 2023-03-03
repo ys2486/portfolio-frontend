@@ -1,0 +1,69 @@
+{
+  "login": {
+    "loginTopMessage": "Login",
+    "mailAddress": "Mail Address",
+    "password": "Password",
+    "loginButton": "LOGIN",
+    "changeRegisterMode": "Create Account?",
+    "english": "英語",
+    "japanese": "日本語"
+  },
+  "register": {
+    "RegisterTopMessage": "Register",
+    "mailAddress": "Mail Address",
+    "userName": "User Name",
+    "password": "Password",
+    "reEnterpassword": "Re-Enter Password",
+    "registerButton": "Register",
+    "changeLoginMode": "Do you have already account?",
+    "english": "英語",
+    "japanese": "日本語"
+  },
+  "validation": {
+    "validationRequiredMessage": "This field is required ",
+    "validationPatternMessage": "Please enter only half-width characters. ",
+    "validationPWUnmatchMessage": "Unmatch Password"
+  },
+  "header": {
+    "todoList": "ToDo List",
+    "logout": "Logout",
+    "english": "英語",
+    "japanese": "日本語"
+  },
+  "taskInput": {
+    "inputPlaceholder": "Please enter task",
+    "taskCreateButton": "CREATE"
+  },
+  "IncompletedTaskList": {
+    "incompletedTaskList": "Incompleted Tasks"
+  },
+  "CompletedTaskList": {
+    "completedTaskList": "Completed Tasks"
+  },
+  "TaskEditModal": {
+    "taskTextFieldLabel": "Task",
+    "createdAt": "Created at：",
+    "updatedAt": "Updated at：",
+    "updateButton": "UPDATE"
+  },
+  "Banner": {
+    "loginWelcomeTop": "Welcome ",
+    "loginWelcomeEnd": "",
+    "loginAgain": "Please login again",
+    "unmatchUser": "User not found with the given Mail Address and Password",
+    "systemError": "Error has occurred.Please contact your administrator",
+    "logout": "Logout completed",
+    "registerAlreadyUsedError": " is already registerd.Please login",
+    "completeTask": "Task completed",
+    "completeTaskError": "Failed to complete task.Please contact your administrator",
+    "createTaskError": "Failed to create task.Please contact your administrator",
+    "deleteTask": "Task deleted",
+    "deleteTaskError": "Failed to delete task.Please contact your administrator",
+    "getTasksError": "Failed to get tasks.Please contact your administrator",
+    "incompleteTask": "Returned to task incompleted",
+    "incompleteTaskError": "Failed to incomplete task.Please contact your administrator",
+    "updateTask": "Task updated",
+    "updateTaskError": "Failed to update task.Please contact your administrator",
+    "getUserInfoError": "Failed to get info of login user.Please contact your administrator"
+  }
+}

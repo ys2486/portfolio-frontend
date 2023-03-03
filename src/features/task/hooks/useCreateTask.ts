@@ -11,6 +11,7 @@ import { taskState } from '../types/taskState';
 import { useGetTask } from './useGetTask';
 import { selectLoginUserInfo } from '../../auth/slice/loginSlice';
 import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // タスク新規登録処理
@@ -24,6 +25,8 @@ export const useCreateTask = () => {
   const { getTask } = useGetTask();
   const { loginUserId } = useSelector(selectLoginUserInfo);
   const { isCookiesCheck } = useIsCookiesCheck();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const createTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
@@ -55,10 +58,10 @@ export const useCreateTask = () => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `タスクの登録に失敗しました。管理者に連絡してください。`,
+          bannerMessage: t('Banner.createTaskError'),
         })
       );
     }
-  }, [dispatch, editedTask, getTask, isCookiesCheck, loginUserId]);
+  }, [dispatch, editedTask, getTask, isCookiesCheck, loginUserId, t]);
   return { createTask };
 };

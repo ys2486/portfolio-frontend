@@ -5,6 +5,7 @@ import { editBanner } from '../../../components/banner/bannerSlice';
 import { fetchAsyncTaskDelete } from '../slice/taskSlice';
 import { useGetTask } from './useGetTask';
 import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // タスク削除処理
@@ -17,6 +18,8 @@ export const useDeleteTask = (taskId: number) => {
   const dispatch: AppDispatch = useDispatch();
   const { getTask } = useGetTask();
   const { isCookiesCheck } = useIsCookiesCheck();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const deleteTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
@@ -34,7 +37,7 @@ export const useDeleteTask = (taskId: number) => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'warning',
-          bannerMessage: `タスクを削除しました。`,
+          bannerMessage: t('Banner.deleteTask'),
         })
       );
       //タスク再取得
@@ -45,10 +48,10 @@ export const useDeleteTask = (taskId: number) => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `タスクの削除に失敗しました。管理者に連絡してください。`,
+          bannerMessage: t('Banner.deleteTaskError'),
         })
       );
     }
-  }, [dispatch, taskId, getTask, isCookiesCheck]);
+  }, [dispatch, taskId, getTask, isCookiesCheck, t]);
   return { deleteTask };
 };

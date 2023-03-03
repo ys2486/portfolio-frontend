@@ -58,7 +58,11 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
     //完了アイコンに変化後少し時間を置く
     await new Promise((resolve) => setTimeout(resolve, 300));
     //タスク完了処理
-    await completeTask();
+    const result: boolean = await completeTask();
+    if (!result) {
+      //タスク完了処理に失敗した場合、未完了アイコンに戻す
+      await setIscompleteIconClicked(false);
+    }
   };
 
   //タスク未完了
@@ -68,7 +72,11 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
     //未完了アイコンに変化後少し時間を置く
     await new Promise((resolve) => setTimeout(resolve, 300));
     //タスク未完了処理
-    await incompleteTask();
+    const result = await incompleteTask();
+    if (!result) {
+      //タスク未完了処理に失敗した場合、完了アイコンに戻す
+      await setIscompleteIconClicked(false);
+    }
   };
 
   return (

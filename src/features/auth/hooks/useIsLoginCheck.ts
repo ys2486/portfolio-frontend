@@ -11,6 +11,7 @@ import {
 import { useDecryptCookies } from '../../../hooks/useDecryptCookies';
 import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
 import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // ログイン済チェック処理
@@ -26,6 +27,8 @@ export const useIsLoginCheck = () => {
   const { isCookiesCheck } = useIsCookiesCheck();
   const loginUserInfo = useSelector(selectLoginUserInfo);
   const { getUserInfo } = useGetUserInfo();
+  //多言語対応用
+  const { t } = useTranslation();
 
   //ログイン済みチェック処理
   const isLoginCheck = useCallback(async () => {
@@ -61,7 +64,9 @@ export const useIsLoginCheck = () => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'success',
-          bannerMessage: `${loginUserInfo.loginUserName}さん ようこそ`,
+          bannerMessage: `${t('Banner.loginWelcomeTop')}${
+            loginUserInfo.loginUserName
+          }${t('Banner.loginWelcomeEnd')}`,
         })
       );
     } else {
@@ -71,7 +76,7 @@ export const useIsLoginCheck = () => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `ログインし直してください`,
+          bannerMessage: t('Banner.loginAgain'),
         })
       );
     }
@@ -85,6 +90,7 @@ export const useIsLoginCheck = () => {
     loginUserInfo.loginUserId,
     loginUserInfo.loginUserMailAddress,
     loginUserInfo.loginUserName,
+    t,
   ]);
   //カスタムフックから返却
   return { isLoginCheck };

@@ -11,6 +11,7 @@ import Page404 from './components/page404/Page404';
 import HeaderLayout from './components/header/HeaderLayout';
 import LoginPageLayout from './features/auth/components/pages/LoginPageLayout';
 import Banner from './components/banner/Banner';
+import './i18n/configs';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

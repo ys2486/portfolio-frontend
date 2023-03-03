@@ -24,13 +24,14 @@
     width: 88%;
     font-size: 10px;
   }
-  .taskButton .createButton {
+  .buttonArea .createButton {
     min-width: 0;
+    padding: 6px 6px;
   }
   .createButton span {
-    font-size: 8px;
+    font-size: 6px;
   }
-  .taskButton {
+  .buttonArea {
     width: 12%;
   }
 }

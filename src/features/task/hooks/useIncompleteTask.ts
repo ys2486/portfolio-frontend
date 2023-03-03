@@ -6,6 +6,7 @@ import { fetchAsyncTaskCompletedUpdate } from '../slice/taskSlice';
 import { taskState } from '../types/taskState';
 import { useGetTask } from './useGetTask';
 import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // タスク未完了処理
@@ -19,12 +20,14 @@ import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
 // 　　　　　　　　updatedAt: string;
 // 　　　　　　　　createdUser: string;
 // 　　　　　　}
-// 　・戻り値：なし
+// 　・戻り値：boolean
 // -----------------------------------------------------------------
 export const useIncompleteTask = (updateTask: taskState['selectedTask']) => {
   const dispatch: AppDispatch = useDispatch();
   const { getTask } = useGetTask();
   const { isCookiesCheck } = useIsCookiesCheck();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const incompleteTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
@@ -43,21 +46,23 @@ export const useIncompleteTask = (updateTask: taskState['selectedTask']) => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'success',
-          bannerMessage: `タスクを未完了に戻しました。`,
+          bannerMessage: t('Banner.incompleteTask'),
         })
       );
       //タスク再取得
       await getTask();
+      return true;
     } else {
       //タスク未完了エラー時
       await dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `タスクの未完了処理に失敗しました。管理者に連絡してください。`,
+          bannerMessage: t('Banner.incompleteTaskError'),
         })
       );
+      return false;
     }
-  }, [dispatch, updateTask, getTask, isCookiesCheck]);
+  }, [dispatch, updateTask, getTask, isCookiesCheck, t]);
   return { incompleteTask };
 };

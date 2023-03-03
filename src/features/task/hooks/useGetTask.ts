@@ -6,6 +6,7 @@ import { editBanner } from '../../../components/banner/bannerSlice';
 import { editIsLogin, selectLoginUserInfo } from '../../auth/slice/loginSlice';
 import { fetchAsyncTasksGet } from '../slice/taskSlice';
 import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // タスク取得処理
@@ -18,6 +19,8 @@ export const useGetTask = () => {
   const navigate = useNavigate();
   const { loginUserId } = useSelector(selectLoginUserInfo);
   const { isCookiesCheck } = useIsCookiesCheck();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const getTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
@@ -42,7 +45,7 @@ export const useGetTask = () => {
           editBanner({
             bannerIsopen: true,
             bannerType: 'error',
-            bannerMessage: `タスクの取得に失敗しました。ログインからやり直してください。`,
+            bannerMessage: t('Banner.getTasksError'),
           })
         );
       }
@@ -53,10 +56,10 @@ export const useGetTask = () => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
-          bannerMessage: `タスクの取得に失敗しました。ログインからやり直してください。`,
+          bannerMessage: t('Banner.getTasksError'),
         })
       );
     }
-  }, [dispatch, navigate, isCookiesCheck, loginUserId]);
+  }, [dispatch, navigate, isCookiesCheck, loginUserId, t]);
   return { getTask };
 };

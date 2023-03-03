@@ -80,6 +80,13 @@ span {
 .passwordEyeIcon {
   font-size: 1.2rem;
 }
+.languageChangeContainer {
+  text-align: center;
+  margin-top: 30px;
+}
+.languageChangeContainer .switchText {
+  font-size: 12px;
+}
 
 @media screen and (max-width: 519px) {
   /* スマホ用CSS */

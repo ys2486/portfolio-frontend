@@ -9,13 +9,56 @@
 
 .menuItem {
   font-family: 'Comic Neue', cursive !important;
+  text-align: center;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.menuItem:hover {
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .loginUserName {
   color: #999;
   text-align: center;
-  margin-bottom: 5px;
+  padding: 5px 10px;
 }
+
+.languageTextArea {
+  font-family: 'Comic Neue', cursive !important;
+  text-align: center;
+  padding: 5px 10px;
+}
+
+.languageTextArea span {
+  color: black;
+}
+
+.switchText {
+  color: black;
+  padding: 0 3px;
+  cursor: pointer;
+  position: relative;
+}
+/* createテキストホバー時のアンダーライン */
+.switchText::after {
+  position: absolute;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 2px;
+  background: black;
+  bottom: -5px;
+  transform: scale(0, 1);
+  transform-origin: left top;
+  transition: transform 0.3s;
+}
+.switchText:hover::after {
+  transform: scale(1, 1);
+}
+/* .languageSwitchText {
+  color: black;
+} */
 
 @media screen and (max-width: 519px) {
   .userIcon {

@@ -1,0 +1,69 @@
+{
+  "login": {
+    "loginTopMessage": "ログイン",
+    "mailAddress": "メールアドレス",
+    "password": "パスワード",
+    "loginButton": "ログイン",
+    "changeRegisterMode": "ユーザー登録がまだの方はこちら",
+    "english": "English",
+    "japanese": "Japanese"
+  },
+  "register": {
+    "RegisterTopMessage": "ユーザー登録",
+    "mailAddress": "メールアドレス",
+    "userName": "ユーザー名",
+    "password": "パスワード",
+    "reEnterpassword": "パスワードを再入力してください",
+    "registerButton": "登録",
+    "changeLoginMode": "ログインはこちら",
+    "english": "English",
+    "japanese": "Japanese"
+  },
+  "validation": {
+    "validationRequiredMessage": "入力が必須の項目です",
+    "validationPatternMessage": "半角英数記号のみで入力してください",
+    "validationPWUnmatchMessage": "パスワードが一致しません"
+  },
+  "header": {
+    "todoList": "ToDo リスト",
+    "logout": "ログアウト",
+    "english": "EN",
+    "japanese": "JA"
+  },
+  "taskInput": {
+    "inputPlaceholder": "タスクを入力してください",
+    "taskCreateButton": "登録"
+  },
+  "IncompletedTaskList": {
+    "incompletedTaskList": "未完了タスク一覧"
+  },
+  "CompletedTaskList": {
+    "completedTaskList": "完了タスク一覧"
+  },
+  "TaskEditModal": {
+    "taskTextFieldLabel": "タスク",
+    "createdAt": "登録日時：",
+    "updatedAt": "更新日時：",
+    "updateButton": "更新"
+  },
+  "Banner": {
+    "loginWelcomeTop": "ようこそ、",
+    "loginWelcomeEnd": "さん",
+    "loginAgain": "ログインし直してください",
+    "unmatchUser": "メールアドレスとパスワードに一致するユーザーが見つかりません",
+    "systemError": "エラーが発生しました。管理者に連絡してください",
+    "logout": "ログアウトしました",
+    "registerAlreadyUsedError": " は既に登録されているメールアドレスとなります。ログインしてください",
+    "completeTask": "タスク完了しました",
+    "completeTaskError": "タスクの完了処理に失敗しました。管理者に連絡してください。",
+    "createTaskError": "タスクの登録に失敗しました。管理者に連絡してください",
+    "deleteTask": "タスクを削除しました",
+    "deleteTaskError": "タスクの削除に失敗しました。管理者に連絡してください",
+    "getTasksError": "タスクの取得に失敗しました。ログインからやり直してください",
+    "incompleteTask": "タスクを未完了に戻しました",
+    "incompleteTaskError": "タスクの未完了処理に失敗しました。管理者に連絡してください",
+    "updateTask": "タスク修正しました",
+    "updateTaskError": "タスクの修正に失敗しました。管理者に連絡してください",
+    "getUserInfoError": "ログインユーザー情報の取得に失敗しました。ログインからやり直してください"
+  }
+}

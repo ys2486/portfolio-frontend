@@ -17,6 +17,7 @@ import {
 import Cookies from 'js-cookie';
 import crypto from 'crypto-js';
 import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
+import { useTranslation } from 'react-i18next';
 
 // -----------------------------------------------------------------
 // ログイン処理
@@ -33,6 +34,8 @@ export const useLogin = () => {
   const key = process.env.REACT_APP_USERID_ENCRYPT_KEY!;
   const registerInfo = useSelector(selectRegisterInfo);
   const { getUserInfo } = useGetUserInfo();
+  //多言語対応用
+  const { t } = useTranslation();
 
   //ログイン処理
   const login = useCallback(
@@ -87,7 +90,7 @@ export const useLogin = () => {
           editBanner({
             bannerIsopen: true,
             bannerType: 'error',
-            bannerMessage: 'UserIdとPasswordに一致するユーザーが見つかりません',
+            bannerMessage: t('Banner.unmatchUser'),
           })
         );
         //ログイン画面・ユーザー登録画面の入力項目の初期化
@@ -103,7 +106,7 @@ export const useLogin = () => {
           editBanner({
             bannerIsopen: true,
             bannerType: 'error',
-            bannerMessage: 'エラーが発生しました。管理者に連絡してください。',
+            bannerMessage: t('Banner.systemError'),
           })
         );
         //ログイン画面・ユーザー登録画面の入力項目の初期化
@@ -123,6 +126,7 @@ export const useLogin = () => {
       registerInfo.mailAddress,
       registerInfo.password,
       getUserInfo,
+      t,
     ]
   );
 

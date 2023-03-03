@@ -5,10 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../../../stores/store';
 import { editBanner } from '../../../components/banner/bannerSlice';
 import { editTasks } from '../../task/slice/taskSlice';
+import { useTranslation } from 'react-i18next';
 
 export const useLogout = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  //多言語対応用
+  const { t } = useTranslation();
 
   const logout = useCallback(
     async (
@@ -27,11 +30,11 @@ export const useLogout = () => {
         editBanner({
           bannerIsopen: true,
           bannerType: 'success',
-          bannerMessage: `ログアウトしました。`,
+          bannerMessage: t('Banner.logout'),
         })
       );
     },
-    [dispatch, navigate]
+    [dispatch, navigate, t]
   );
   return { logout };
 };

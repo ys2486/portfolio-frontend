@@ -9,6 +9,7 @@ import { selectSelectedTask, editSelectTask } from '../../slice/taskSlice';
 import { AppDispatch } from '../../../../stores/store';
 import { useUpdateTask } from '../../hooks/useUpdateTask';
 import styles from './TaskEditModal.module.css';
+import { useTranslation } from 'react-i18next';
 
 //モーダルのスタイル
 const customStyles = {
@@ -46,6 +47,8 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
   const selectedTask: taskState['selectedTask'] =
     useSelector(selectSelectedTask);
   const { updateTask } = useUpdateTask(setEditModalIsOpen);
+  //多言語対応用
+  const { t } = useTranslation();
 
   return (
     <Modal
@@ -57,7 +60,7 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
         <TextField
           className={styles.textArea}
           variant="outlined"
-          label="タスク"
+          label={t('TaskEditModal.taskTextFieldLabel')}
           fullWidth
           multiline
           value={selectedTask.name}
@@ -72,10 +75,16 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
           }
         />
         {formatCreatedAt && (
-          <p className={styles.dateTime}>登録日時：{formatCreatedAt}</p>
+          <p className={styles.dateTime}>
+            {t('TaskEditModal.createdAt')}
+            {formatCreatedAt}
+          </p>
         )}
         {formatUpdatedAt && (
-          <p className={styles.dateTime}>更新日時：{formatUpdatedAt}</p>
+          <p className={styles.dateTime}>
+            {t('TaskEditModal.updatedAt')}
+            {formatUpdatedAt}
+          </p>
         )}
         <Grid container justifyContent="center">
           <Grid item xs={3}>
@@ -86,7 +95,7 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
               onClick={updateTask}
               className={styles.updateButton}
             >
-              UPDATE
+              {t('TaskEditModal.updateButton')}
             </Button>
           </Grid>
         </Grid>
