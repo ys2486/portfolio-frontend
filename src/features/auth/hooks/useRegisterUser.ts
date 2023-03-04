@@ -29,11 +29,11 @@ export const useRegisterUser = () => {
   const registerUser = useCallback(async () => {
     //ユーザー登録処理
     const res = await fetchAsyncRegister(registerInfo);
-    console.log('res');
-    console.log(res);
+    // console.log('res');
+    // console.log(res);
     const registerResult: number = res.request?.status;
-    console.log('registerResult');
-    console.log(registerResult);
+    // console.log('registerResult');
+    // console.log(registerResult);
 
     if (registerResult === 200) {
       //ユーザー登録正常時
@@ -41,7 +41,7 @@ export const useRegisterUser = () => {
       await login(1);
       //ユーザー登録モードからログインモードに戻す
       await dispatch(toggleMode());
-    } else if (registerResult === 500) {
+    } else if (registerResult === 500 || registerResult === 0) {
       //既にそのユーザーIDが登録されている場合
       dispatch(
         editBanner({
