@@ -101,6 +101,7 @@ const Login: React.FC = () => {
         <p className={styles.subjectTitle}>{t('login.password')}</p>
         <input
           type={isRevealPassword ? 'text' : 'password'}
+          enterKeyHint="go"
           className={styles.inputLog}
           onKeyPress={pressEnter}
           value={authen.password}

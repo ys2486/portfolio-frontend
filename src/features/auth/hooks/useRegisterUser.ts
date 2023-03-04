@@ -29,7 +29,11 @@ export const useRegisterUser = () => {
   const registerUser = useCallback(async () => {
     //ユーザー登録処理
     const res = await fetchAsyncRegister(registerInfo);
+    console.log('res');
+    console.log(res);
     const registerResult: number = res.request?.status;
+    console.log('registerResult');
+    console.log(registerResult);
 
     if (registerResult === 200) {
       //ユーザー登録正常時

@@ -14,6 +14,8 @@ import { BsCheckCircleFill, BsTrash } from 'react-icons/bs';
 import { FaEdit } from 'react-icons/fa';
 import { useCompleteTask } from '../../hooks/useCompleteTask';
 import { useDeleteTask } from '../../hooks/useDeleteTask';
+import { TiDelete } from 'react-icons/ti';
+import { useIncompleteTask } from '../../hooks/useIncompleteTask';
 
 //モーダルのスタイル
 const customStyles = {
@@ -52,6 +54,7 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
     useSelector(selectSelectedTask);
   const { updateTask } = useUpdateTask(setEditModalIsOpen);
   const { completeTask } = useCompleteTask(selectedTask);
+  const { incompleteTask } = useIncompleteTask(selectedTask);
   const { deleteTask } = useDeleteTask(selectedTask.id);
 
   //多言語対応用
@@ -60,6 +63,12 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
   //完了ボタンクリック時
   const completeButtonClicked = async () => {
     await completeTask();
+    await setEditModalIsOpen(false);
+  };
+
+  //完了ボタンクリック時
+  const incompleteButtonClicked = async () => {
+    await incompleteTask();
     await setEditModalIsOpen(false);
   };
 
@@ -121,19 +130,36 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
           </Grid>
         </Grid>
         <Grid container justifyContent="space-around">
-          {/* 完了ボタン */}
-          <Grid item xs={5}>
-            <Button
-              color="success"
-              variant="contained"
-              fullWidth
-              onClick={completeButtonClicked}
-              className={styles.modalButton}
-              startIcon={<BsCheckCircleFill />}
-            >
-              {t('TaskEditModal.completeButton')}
-            </Button>
-          </Grid>
+          {/* 完了タスク、未完了タスクによってボタンを出し分ける */}
+          {selectedTask.completed ? (
+            // 未完了ボタン
+            <Grid item xs={5}>
+              <Button
+                color="inherit"
+                variant="contained"
+                fullWidth
+                onClick={incompleteButtonClicked}
+                className={styles.modalButton}
+                startIcon={<TiDelete />}
+              >
+                {t('TaskEditModal.incompleteButton')}
+              </Button>
+            </Grid>
+          ) : (
+            // 完了ボタン
+            <Grid item xs={5}>
+              <Button
+                color="success"
+                variant="contained"
+                fullWidth
+                onClick={completeButtonClicked}
+                className={styles.modalButton}
+                startIcon={<BsCheckCircleFill />}
+              >
+                {t('TaskEditModal.completeButton')}
+              </Button>
+            </Grid>
+          )}
           {/* 削除ボタン */}
           <Grid item xs={5}>
             <Button
