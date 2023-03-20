@@ -62,7 +62,7 @@ export const useLogin = () => {
       if (loginResult === 200) {
         //ログイン正常時
         //JWTトークンを、cookieに保存
-        await Cookies.set('access_token', res.headers['x-auth-token'], {
+        Cookies.set('access_token', res.headers['x-auth-token'], {
           expires: 7,
         });
         //ログインユーザーメールアドレスを暗号化しCookieに保存
@@ -70,13 +70,13 @@ export const useLogin = () => {
           loginUserMailAddress,
           key
         ).toString();
-        await Cookies.set('login_user', enryptedUserMailAddress, {
+        Cookies.set('login_user', enryptedUserMailAddress, {
           expires: 7,
         });
         //ログインユーザー情報取得処理
         await getUserInfo(loginUserMailAddress);
         //tasks画面に遷移
-        await navigate('tasks');
+        navigate('tasks');
         //ログイン画面・ユーザー登録画面の入力項目の初期化
         dispatch(editmailAddress(''));
         dispatch(editPassword(''));

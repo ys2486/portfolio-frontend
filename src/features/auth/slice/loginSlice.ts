@@ -133,7 +133,6 @@ const loginSlice = createSlice({
   //ログインユーザー情報取得後の処理
   extraReducers: (builder) => {
     builder.addCase(fetchAsyncLoginUserInfoGet.fulfilled, (state, action) => {
-      // state.loginUserInfo = action.payload.data;
       state.loginUserInfo.loginUserId = action.payload.data.userId;
       state.loginUserInfo.loginUserMailAddress =
         action.payload.data.mailAddress;

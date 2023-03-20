@@ -18,9 +18,10 @@ textarea {
   }
   .modalButton {
     font-size: 10px !important;
+    padding: 6px 10px !important;
   }
   .modalButton span {
-    margin-right: 4px;
+    margin-right: 2px;
     white-space: nowrap;
   }
 }

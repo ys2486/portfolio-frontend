@@ -105,6 +105,7 @@ const Login: React.FC = () => {
           className={styles.inputLog}
           onKeyPress={pressEnter}
           value={authen.password}
+          data-testid="loginPassword"
           // パスワード用バリデーション
           {...register('password', {
             onChange: (e) => dispatch(editPassword(e.target.value)),

@@ -8,16 +8,7 @@ import Cookies from 'js-cookie';
 const apiUrl = process.env.REACT_APP_TASK_API_URL;
 
 const initialState: taskState = {
-  tasks: [
-    // {
-    //   id: 0,
-    //   name: '',
-    //   completed: false,
-    //   createdAt: '',
-    //   updatedAt: '',
-    //   createdUser: 0,
-    // },
-  ],
+  tasks: [],
   editedTask: {
     id: 0,
     name: '',

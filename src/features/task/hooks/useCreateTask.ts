@@ -30,7 +30,7 @@ export const useCreateTask = () => {
 
   const createTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
-    const checkResult: boolean = await isCookiesCheck();
+    const checkResult: boolean = isCookiesCheck();
     if (!checkResult) {
       //エラーの場合処理終了
       dispatch(editEditedTask({ id: 0, name: '' }));
@@ -47,14 +47,14 @@ export const useCreateTask = () => {
     if (res.payload?.request?.status === 200) {
       //タスク登録成功時
       //タスク登録用テキスト初期化
-      await dispatch(editEditedTask({ id: 0, name: '' }));
+      dispatch(editEditedTask({ id: 0, name: '' }));
       //タスクの再取得
       await getTask();
     } else {
       //タスク登録エラー時
       //タスク登録用テキスト初期化
-      await dispatch(editEditedTask({ id: 0, name: '' }));
-      await dispatch(
+      dispatch(editEditedTask({ id: 0, name: '' }));
+      dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',

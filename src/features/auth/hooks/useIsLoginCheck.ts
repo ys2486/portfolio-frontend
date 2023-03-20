@@ -33,7 +33,7 @@ export const useIsLoginCheck = () => {
   //ログイン済みチェック処理
   const isLoginCheck = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
-    const checkResult = await isCookiesCheck();
+    const checkResult = isCookiesCheck();
     //エラーの場合処理終了
     if (!checkResult) {
       throw new Error();
@@ -43,7 +43,7 @@ export const useIsLoginCheck = () => {
     const res = await fetchAsyncisLogin();
     if (res.data === true) {
       //ログイン済みの場合
-      await dispatch(editIsLogin(true));
+      dispatch(editIsLogin(true));
 
       //stateのユーザー情報が不足している場合、ログインユーザー情報を取得（再描画時など）
       if (
@@ -52,7 +52,7 @@ export const useIsLoginCheck = () => {
         loginUserInfo.loginUserName === ''
       ) {
         //Cookieからメールアドレスを取得し、ログインユーザー情報を取得
-        const decryptedLoginUserMailAddress: string = await decryptCookies({
+        const decryptedLoginUserMailAddress: string = decryptCookies({
           CookieKey: 'login_user',
           DecryptKey: key,
         });
@@ -60,7 +60,7 @@ export const useIsLoginCheck = () => {
       }
 
       //ログイン成功バナー表示
-      await dispatch(
+      dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'success',
@@ -71,8 +71,8 @@ export const useIsLoginCheck = () => {
       );
     } else {
       //ログインしていない場合（ログインせずに直接task画面にURLで遷移しようとした場合等）
-      await navigate('/');
-      await dispatch(
+      navigate('/');
+      dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',

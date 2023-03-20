@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../stores/store';
 import { editBanner } from '../../../components/banner/bannerSlice';
@@ -28,10 +28,13 @@ export const useCompleteTask = (updateTask: taskState['selectedTask']) => {
   const { isCookiesCheck } = useIsCookiesCheck();
   //多言語対応用
   const { t } = useTranslation();
+  //追加
+  const [isCompleteIconClicked, setIscompleteIconClicked] =
+    useState<boolean>(false);
 
   const completeTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
-    const checkResult = await isCookiesCheck();
+    const checkResult = isCookiesCheck();
     if (!checkResult) {
       //エラーの場合処理終了
       throw new Error();
@@ -42,8 +45,12 @@ export const useCompleteTask = (updateTask: taskState['selectedTask']) => {
       fetchAsyncTaskCompletedUpdate({ ...updateTask, completed: true })
     );
     if (res.payload?.request?.status === 200) {
-      //タスク完了成功時、タスク再取得
-      await dispatch(
+      //タスク完了成功時
+      //完了アイコンに変化させる
+      setIscompleteIconClicked(true);
+      //完了アイコンに変化後少し時間を置く
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'success',
@@ -51,18 +58,19 @@ export const useCompleteTask = (updateTask: taskState['selectedTask']) => {
         })
       );
       await getTask();
-      return true;
     } else {
+      //追加
+      //タスク完了処理に失敗した場合、未完了アイコンに戻す
+      setIscompleteIconClicked(false);
       //タスク完了エラー時
-      await dispatch(
+      dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',
           bannerMessage: t('Banner.completeTaskError'),
         })
       );
-      return false;
     }
   }, [dispatch, getTask, isCookiesCheck, updateTask, t]);
-  return { completeTask };
+  return { completeTask, isCompleteIconClicked };
 };

@@ -63,19 +63,19 @@ const TaskEditModal: React.FC<taskEditModalProps> = (props) => {
   //完了ボタンクリック時
   const completeButtonClicked = async () => {
     await completeTask();
-    await setEditModalIsOpen(false);
+    setEditModalIsOpen(false);
   };
 
   //完了ボタンクリック時
   const incompleteButtonClicked = async () => {
     await incompleteTask();
-    await setEditModalIsOpen(false);
+    setEditModalIsOpen(false);
   };
 
   //削除ボタンクリック時
   const deleteButtonClicked = async () => {
     await deleteTask();
-    await setEditModalIsOpen(false);
+    setEditModalIsOpen(false);
   };
 
   return (

@@ -36,7 +36,7 @@ export const useRegisterUser = () => {
       //作成したユーザーでログイン（ユーザー登録時の流れでログインする場合は「1」を引数にセットする）
       await login(1);
       //ユーザー登録モードからログインモードに戻す
-      await dispatch(toggleMode());
+      dispatch(toggleMode());
     } else if (registerResult === 500 || registerResult === 0) {
       //既にそのユーザーIDが登録されている場合
       dispatch(

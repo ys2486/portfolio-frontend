@@ -24,7 +24,7 @@ export const useGetTask = () => {
 
   const getTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
-    const checkResult = await isCookiesCheck();
+    const checkResult = isCookiesCheck();
     if (!checkResult) {
       throw new Error();
     }
@@ -37,11 +37,11 @@ export const useGetTask = () => {
       if (tasksGetResult === 200) {
         //タスク取得成功時
         //タスク画面を表示する
-        await dispatch(editIsLogin(true));
+        dispatch(editIsLogin(true));
       } else {
         //タスクの取得エラー時
-        await navigate('/');
-        await dispatch(
+        navigate('/');
+        dispatch(
           editBanner({
             bannerIsopen: true,
             bannerType: 'error',
@@ -51,8 +51,8 @@ export const useGetTask = () => {
       }
     } else {
       //API以外のエラー等で、タスク取得結果すら存在しない場合
-      await navigate('/');
-      await dispatch(
+      navigate('/');
+      dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',

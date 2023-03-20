@@ -30,10 +30,8 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
   //モーダルのstate
   const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);
   const { deleteTask } = useDeleteTask(task.id);
-  const { completeTask } = useCompleteTask(task);
-  const { incompleteTask } = useIncompleteTask(task);
-  const [isCompleteIconClicked, setIscompleteIconClicked] =
-    useState<boolean>(false);
+  const { completeTask, isCompleteIconClicked } = useCompleteTask(task);
+  const { incompleteTask, isInCompleteIconClicked } = useIncompleteTask(task);
 
   //登録日時と更新日時を見やすいフォーマットに変換
   let formatCreatedAt: string = '';
@@ -46,37 +44,9 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
   }
 
   //編集用ボタンもしくは、テキストクリック時の処理
-  const editClicked = async () => {
-    await dispatch(editSelectTask(task));
-    await setEditModalIsOpen(true);
-  };
-
-  //タスク完了
-  const completeIconClick = async () => {
-    //完了アイコンに変化させる
-    await setIscompleteIconClicked(true);
-    //完了アイコンに変化後少し時間を置く
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    //タスク完了処理
-    const result: boolean = await completeTask();
-    if (!result) {
-      //タスク完了処理に失敗した場合、未完了アイコンに戻す
-      await setIscompleteIconClicked(false);
-    }
-  };
-
-  //タスク未完了
-  const inCompleteIconClick = async () => {
-    //未完了アイコンに変化させる
-    await setIscompleteIconClicked(true);
-    //未完了アイコンに変化後少し時間を置く
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    //タスク未完了処理
-    const result = await incompleteTask();
-    if (!result) {
-      //タスク未完了処理に失敗した場合、完了アイコンに戻す
-      await setIscompleteIconClicked(false);
-    }
+  const editClicked = () => {
+    dispatch(editSelectTask(task));
+    setEditModalIsOpen(true);
   };
 
   return (
@@ -90,17 +60,17 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
               //一時的に完了アイコンに変更
               <BsCheckCircleFill />
             ) : (
-              <BsCircle onClick={completeIconClick} />
+              <BsCircle onClick={completeTask} />
             )}
           </button>
         ) : (
           //完了タスク
           <button className={styles.taskIcon}>
-            {isCompleteIconClicked ? (
+            {isInCompleteIconClicked ? (
               //一時的に未完了アイコンに変更
               <BsCircle />
             ) : (
-              <BsCheckCircleFill onClick={inCompleteIconClick} />
+              <BsCheckCircleFill onClick={incompleteTask} />
             )}
           </button>
         )}

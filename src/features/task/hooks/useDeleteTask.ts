@@ -23,7 +23,7 @@ export const useDeleteTask = (taskId: number) => {
 
   const deleteTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
-    const checkResult = await isCookiesCheck();
+    const checkResult = isCookiesCheck();
     if (!checkResult) {
       //エラーの場合処理終了
       throw new Error();
@@ -33,7 +33,7 @@ export const useDeleteTask = (taskId: number) => {
     const res = await dispatch(fetchAsyncTaskDelete(taskId));
     if (res.payload?.request?.status === 200) {
       //タスク削除成功時
-      await dispatch(
+      dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'warning',
@@ -44,7 +44,7 @@ export const useDeleteTask = (taskId: number) => {
       await getTask();
     } else {
       //タスク削除エラー時
-      await dispatch(
+      dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',

@@ -18,7 +18,7 @@ export const useIsCookiesCheck = () => {
   //多言語対応用
   const { t } = useTranslation();
 
-  const isCookiesCheck = useCallback(async () => {
+  const isCookiesCheck = useCallback(() => {
     //クッキーから必要な情報を取得する
     const token = Cookies.get('access_token');
     const loginUserId = Cookies.get('login_user');
@@ -29,11 +29,11 @@ export const useIsCookiesCheck = () => {
     } else {
       //クッキーに必要な情報がセットされていない場合
       //クッキーから削除
-      await Cookies.remove('login_user');
-      await Cookies.remove('access_token');
+      Cookies.remove('login_user');
+      Cookies.remove('access_token');
       //ログイン画面に戻す
-      await navigate('/');
-      await dispatch(
+      navigate('/');
+      dispatch(
         editBanner({
           bannerIsopen: true,
           bannerType: 'error',

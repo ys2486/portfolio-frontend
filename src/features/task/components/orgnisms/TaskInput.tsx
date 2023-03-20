@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 const TaskInput: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const editedTask: taskState['editedTask'] = useSelector(selectEditedTask);
-  const isDisabled = editedTask.name.length === 0;
+  const isDisabled: boolean = editedTask.name.length === 0;
   const { createTask } = useCreateTask();
   //多言語対応用
   const { t } = useTranslation();

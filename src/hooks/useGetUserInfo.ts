@@ -22,6 +22,7 @@ export const useGetUserInfo = () => {
   const getUserInfo = useCallback(
     async (loginUserMailAddress: string) => {
       //ログインユーザー情報取得
+      console.log(loginUserMailAddress);
       const res = await dispatch(
         fetchAsyncLoginUserInfoGet(loginUserMailAddress)
       );
@@ -30,8 +31,8 @@ export const useGetUserInfo = () => {
         //（fetchAsyncLoginUserInfoGetの後処理でユーザー情報をstateにセットしている）
       } else {
         //APIでエラーが発生しタスクの取得に失敗した場合
-        await navigate('/');
-        await dispatch(
+        navigate('/');
+        dispatch(
           editBanner({
             bannerIsopen: true,
             bannerType: 'error',
