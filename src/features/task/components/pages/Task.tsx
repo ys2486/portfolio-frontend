@@ -5,12 +5,15 @@ import TaskMobile from '../templates/TaskMobile';
 import TaskTablet from '../templates/TaskTablet';
 import { useGetTask } from '../../hooks/useGetTask';
 import { AppDispatch } from '../../../../stores/store';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { editEditedTask } from '../../slice/taskSlice';
+import { selectIsGetLoginUserInfo } from '../../../auth/slice/loginSlice';
 
 const Task: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { getTask } = useGetTask();
+  //★追加
+  const isGetLoginUserInfo = useSelector(selectIsGetLoginUserInfo);
 
   //タスク画面初期処理
   useEffect(() => {
@@ -18,8 +21,19 @@ const Task: React.FC = () => {
       dispatch(editEditedTask({ id: 0, name: '' }));
       await getTask();
     };
-    initTask();
-  }, [getTask, dispatch]);
+    //ログインユーザー情報取得後に実行
+    if (isGetLoginUserInfo) {
+      initTask();
+    }
+  }, [getTask, dispatch, isGetLoginUserInfo]);
+
+  // useEffect(() => {
+  //   const initTask = async () => {
+  //     dispatch(editEditedTask({ id: 0, name: '' }));
+  //     await getTask();
+  //   };
+  //   initTask();
+  // }, [getTask, dispatch]);
 
   //レスポンシブ定義
   const mediaQueries = {
