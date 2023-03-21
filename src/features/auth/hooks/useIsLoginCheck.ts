@@ -60,15 +60,17 @@ export const useIsLoginCheck = () => {
       }
 
       //ログイン成功バナー表示
-      dispatch(
-        editBanner({
-          bannerIsopen: true,
-          bannerType: 'success',
-          bannerMessage: `${t('Banner.loginWelcomeTop')}${
-            loginUserInfo.loginUserName
-          }${t('Banner.loginWelcomeEnd')}`,
-        })
-      );
+      if (loginUserInfo.loginUserName) {
+        dispatch(
+          editBanner({
+            bannerIsopen: true,
+            bannerType: 'success',
+            bannerMessage: `${t('Banner.loginWelcomeTop')}${
+              loginUserInfo.loginUserName
+            }${t('Banner.loginWelcomeEnd')}`,
+          })
+        );
+      }
     } else {
       //ログインしていない場合（ログインせずに直接task画面にURLで遷移しようとした場合等）
       navigate('/');

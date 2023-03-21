@@ -7,6 +7,8 @@ import { editIsLogin, selectLoginUserInfo } from '../../auth/slice/loginSlice';
 import { fetchAsyncTasksGet } from '../slice/taskSlice';
 import { useIsCookiesCheck } from '../../../hooks/useIsCookiesCheck';
 import { useTranslation } from 'react-i18next';
+import { useDecryptCookies } from '../../../hooks/useDecryptCookies';
+import { useGetUserInfo } from '../../../hooks/useGetUserInfo';
 
 // -----------------------------------------------------------------
 // タスク取得処理
@@ -21,12 +23,25 @@ export const useGetTask = () => {
   const { isCookiesCheck } = useIsCookiesCheck();
   //多言語対応用
   const { t } = useTranslation();
+  const { decryptCookies } = useDecryptCookies();
+  const key = process.env.REACT_APP_USERID_ENCRYPT_KEY!;
+  const { getUserInfo } = useGetUserInfo();
 
   const getTask = useCallback(async () => {
     //認証に必要な情報がCookiesに存在しているかチェック
     const checkResult = isCookiesCheck();
     if (!checkResult) {
       throw new Error();
+    }
+
+    //ログインユーザーIDが取得できない場合、再度ユーザー情報を取得
+    if (!loginUserId) {
+      //Cookieからメールアドレスを取得し、ログインユーザー情報を取得
+      const decryptedLoginUserMailAddress: string = decryptCookies({
+        CookieKey: 'login_user',
+        DecryptKey: key,
+      });
+      await getUserInfo(decryptedLoginUserMailAddress);
     }
 
     //ユーザーに紐づく全タスク取得処理

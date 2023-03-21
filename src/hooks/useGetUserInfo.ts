@@ -22,7 +22,6 @@ export const useGetUserInfo = () => {
   const getUserInfo = useCallback(
     async (loginUserMailAddress: string) => {
       //ログインユーザー情報取得
-      console.log(loginUserMailAddress);
       const res = await dispatch(
         fetchAsyncLoginUserInfoGet(loginUserMailAddress)
       );
