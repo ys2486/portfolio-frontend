@@ -13,9 +13,17 @@ const Task: React.FC = () => {
   const { getTask } = useGetTask();
 
   //タスク画面初期処理
+  // useEffect(() => {
+  //   dispatch(editEditedTask({ id: 0, name: '' }));
+  //   getTask();
+  // }, [getTask, dispatch]);
+
   useEffect(() => {
-    dispatch(editEditedTask({ id: 0, name: '' }));
-    getTask();
+    const initTask = async () => {
+      dispatch(editEditedTask({ id: 0, name: '' }));
+      getTask();
+    };
+    initTask();
   }, [getTask, dispatch]);
 
   //レスポンシブ定義
