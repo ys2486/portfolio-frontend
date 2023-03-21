@@ -5,6 +5,7 @@ import { AppDispatch } from '../stores/store';
 import { editBanner } from '../components/banner/bannerSlice';
 import { fetchAsyncLoginUserInfoGet } from '../features/auth/slice/loginSlice';
 import { useTranslation } from 'react-i18next';
+import { useGetTask } from '../features/task/hooks/useGetTask';
 
 // -----------------------------------------------------------------
 // ログインユーザー情報取得処理
@@ -18,6 +19,7 @@ export const useGetUserInfo = () => {
   const navigate = useNavigate();
   //多言語対応用
   const { t } = useTranslation();
+  const { getTask } = useGetTask();
 
   const getUserInfo = useCallback(
     async (loginUserMailAddress: string) => {
@@ -26,8 +28,8 @@ export const useGetUserInfo = () => {
         fetchAsyncLoginUserInfoGet(loginUserMailAddress)
       );
       if (res.payload?.request?.status === 200) {
-        //ログインユーザー情報取得処理成功時は何もしない
-        //（fetchAsyncLoginUserInfoGetの後処理でユーザー情報をstateにセットしている）
+        //ログインユーザー情報取得処理成功時に、タスク情報を取得
+        await getTask();
       } else {
         //APIでエラーが発生しタスクの取得に失敗した場合
         navigate('/');
@@ -40,7 +42,7 @@ export const useGetUserInfo = () => {
         );
       }
     },
-    [dispatch, navigate, t]
+    [dispatch, navigate, t, getTask]
   );
 
   //カスタムフックから返却

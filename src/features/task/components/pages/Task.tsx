@@ -13,15 +13,10 @@ const Task: React.FC = () => {
   const { getTask } = useGetTask();
 
   //タスク画面初期処理
-  // useEffect(() => {
-  //   dispatch(editEditedTask({ id: 0, name: '' }));
-  //   getTask();
-  // }, [getTask, dispatch]);
-
   useEffect(() => {
     const initTask = async () => {
       dispatch(editEditedTask({ id: 0, name: '' }));
-      await getTask();
+      // await getTask();
     };
     initTask();
   }, [getTask, dispatch]);
