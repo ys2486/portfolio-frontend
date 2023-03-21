@@ -16,6 +16,5 @@ export type LoginState = {
   };
   isLoginView: boolean;
   isLogin: boolean;
-  //★追加
   isGetLoginUserInfo: boolean;
 };

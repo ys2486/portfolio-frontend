@@ -12,7 +12,6 @@ import { selectIsGetLoginUserInfo } from '../../../auth/slice/loginSlice';
 const Task: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { getTask } = useGetTask();
-  //★追加
   const isGetLoginUserInfo = useSelector(selectIsGetLoginUserInfo);
 
   //タスク画面初期処理
@@ -26,14 +25,6 @@ const Task: React.FC = () => {
       initTask();
     }
   }, [getTask, dispatch, isGetLoginUserInfo]);
-
-  // useEffect(() => {
-  //   const initTask = async () => {
-  //     dispatch(editEditedTask({ id: 0, name: '' }));
-  //     await getTask();
-  //   };
-  //   initTask();
-  // }, [getTask, dispatch]);
 
   //レスポンシブ定義
   const mediaQueries = {

@@ -28,7 +28,6 @@ export const useCompleteTask = (updateTask: taskState['selectedTask']) => {
   const { isCookiesCheck } = useIsCookiesCheck();
   //多言語対応用
   const { t } = useTranslation();
-  //追加
   const [isCompleteIconClicked, setIscompleteIconClicked] =
     useState<boolean>(false);
 
@@ -59,7 +58,6 @@ export const useCompleteTask = (updateTask: taskState['selectedTask']) => {
       );
       await getTask();
     } else {
-      //追加
       //タスク完了処理に失敗した場合、未完了アイコンに戻す
       setIscompleteIconClicked(false);
       //タスク完了エラー時

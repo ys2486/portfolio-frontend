@@ -32,7 +32,6 @@ describe('loginSlice', () => {
     },
     isLoginView: true,
     isLogin: false,
-    //★追加
     isGetLoginUserInfo: false,
   };
   // Reducers

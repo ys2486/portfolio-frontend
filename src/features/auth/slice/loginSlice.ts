@@ -89,7 +89,6 @@ const initialState: LoginState = {
   },
   isLoginView: true,
   isLogin: false,
-  //★追加
   isGetLoginUserInfo: false,
 };
 
@@ -139,7 +138,6 @@ const loginSlice = createSlice({
       state.loginUserInfo.loginUserMailAddress =
         action.payload.data.mailAddress;
       state.loginUserInfo.loginUserName = action.payload.data.userName;
-      //★追加
       state.isGetLoginUserInfo = true;
     });
   },
@@ -165,7 +163,6 @@ export const selectLoginUserInfo = (state: RootState) =>
   state.login.loginUserInfo;
 export const selectIsLoginView = (state: RootState) => state.login.isLoginView;
 export const selectIsLogin = (state: RootState) => state.login.isLogin;
-//★追加
 export const selectIsGetLoginUserInfo = (state: RootState) =>
   state.login.isGetLoginUserInfo;
 
