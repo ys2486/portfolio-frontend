@@ -21,7 +21,7 @@ const Task: React.FC = () => {
   useEffect(() => {
     const initTask = async () => {
       dispatch(editEditedTask({ id: 0, name: '' }));
-      getTask();
+      await getTask();
     };
     initTask();
   }, [getTask, dispatch]);

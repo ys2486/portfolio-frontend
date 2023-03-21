@@ -21,7 +21,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = (props) => {
 
   useEffect(() => {
     const initHeaderLayout = async () => {
-      isLoginCheck();
+      await isLoginCheck();
     };
     initHeaderLayout();
   }, [isLoginCheck]);
