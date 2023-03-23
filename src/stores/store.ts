@@ -9,13 +9,6 @@ export const store = configureStore({
     login: loginSlice,
     banner: bannerSlice,
   },
-  //A non-serializable value was detected対策
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware({
-  //     serializableCheck: {
-  //       ignoredActionPaths: ['payload'], // action.payload に対しては serializableCheck しない
-  //     },
-  //   }),
 });
 
 export type AppDispatch = typeof store.dispatch;
