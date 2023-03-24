@@ -27,4 +27,4 @@ yarn-error.log*
 .env.production
 
 # 環境設定ファイル
-# .env
+.env
