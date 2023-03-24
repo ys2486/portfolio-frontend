@@ -25,3 +25,6 @@ yarn-error.log*
 # 追加
 .env.development
 .env.production
+
+# 環境設定ファイル
+# .env
